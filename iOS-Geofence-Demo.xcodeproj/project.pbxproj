@@ -1,0 +1,598 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8DF492A2259C530F00AAF3DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A1259C530F00AAF3DA /* AppDelegate.swift */; };
+		8DF492A4259C530F00AAF3DA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A3259C530F00AAF3DA /* SceneDelegate.swift */; };
+		8DF492A6259C530F00AAF3DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A5259C530F00AAF3DA /* ViewController.swift */; };
+		8DF492A9259C530F00AAF3DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DF492A7259C530F00AAF3DA /* Main.storyboard */; };
+		8DF492AB259C531200AAF3DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DF492AA259C531200AAF3DA /* Assets.xcassets */; };
+		8DF492AE259C531200AAF3DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8DF492AC259C531200AAF3DA /* LaunchScreen.storyboard */; };
+		8DF492B9259C531300AAF3DA /* iOS_Geofence_DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492B8259C531300AAF3DA /* iOS_Geofence_DemoTests.swift */; };
+		8DF492C4259C531300AAF3DA /* iOS_Geofence_DemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492C3259C531300AAF3DA /* iOS_Geofence_DemoUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8DF492B5259C531300AAF3DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8DF49296259C530F00AAF3DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DF4929D259C530F00AAF3DA;
+			remoteInfo = "iOS-Geofence-Demo";
+		};
+		8DF492C0259C531300AAF3DA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8DF49296259C530F00AAF3DA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8DF4929D259C530F00AAF3DA;
+			remoteInfo = "iOS-Geofence-Demo";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		8DF4929E259C530F00AAF3DA /* iOS-Geofence-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Geofence-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DF492A1259C530F00AAF3DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8DF492A3259C530F00AAF3DA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		8DF492A5259C530F00AAF3DA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		8DF492A8259C530F00AAF3DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8DF492AA259C531200AAF3DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8DF492AD259C531200AAF3DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8DF492AF259C531200AAF3DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DF492B4259C531300AAF3DA /* iOS-Geofence-DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-Geofence-DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DF492B8259C531300AAF3DA /* iOS_Geofence_DemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_Geofence_DemoTests.swift; sourceTree = "<group>"; };
+		8DF492BA259C531300AAF3DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8DF492BF259C531300AAF3DA /* iOS-Geofence-DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "iOS-Geofence-DemoUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DF492C3259C531300AAF3DA /* iOS_Geofence_DemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_Geofence_DemoUITests.swift; sourceTree = "<group>"; };
+		8DF492C5259C531300AAF3DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DF4929B259C530F00AAF3DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DF492B1259C531300AAF3DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DF492BC259C531300AAF3DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8DF49295259C530F00AAF3DA = {
+			isa = PBXGroup;
+			children = (
+				8DF492A0259C530F00AAF3DA /* iOS-Geofence-Demo */,
+				8DF492B7259C531300AAF3DA /* iOS-Geofence-DemoTests */,
+				8DF492C2259C531300AAF3DA /* iOS-Geofence-DemoUITests */,
+				8DF4929F259C530F00AAF3DA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8DF4929F259C530F00AAF3DA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DF4929E259C530F00AAF3DA /* iOS-Geofence-Demo.app */,
+				8DF492B4259C531300AAF3DA /* iOS-Geofence-DemoTests.xctest */,
+				8DF492BF259C531300AAF3DA /* iOS-Geofence-DemoUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8DF492A0259C530F00AAF3DA /* iOS-Geofence-Demo */ = {
+			isa = PBXGroup;
+			children = (
+				8DF492A1259C530F00AAF3DA /* AppDelegate.swift */,
+				8DF492A3259C530F00AAF3DA /* SceneDelegate.swift */,
+				8DF492A5259C530F00AAF3DA /* ViewController.swift */,
+				8DF492A7259C530F00AAF3DA /* Main.storyboard */,
+				8DF492AA259C531200AAF3DA /* Assets.xcassets */,
+				8DF492AC259C531200AAF3DA /* LaunchScreen.storyboard */,
+				8DF492AF259C531200AAF3DA /* Info.plist */,
+			);
+			path = "iOS-Geofence-Demo";
+			sourceTree = "<group>";
+		};
+		8DF492B7259C531300AAF3DA /* iOS-Geofence-DemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				8DF492B8259C531300AAF3DA /* iOS_Geofence_DemoTests.swift */,
+				8DF492BA259C531300AAF3DA /* Info.plist */,
+			);
+			path = "iOS-Geofence-DemoTests";
+			sourceTree = "<group>";
+		};
+		8DF492C2259C531300AAF3DA /* iOS-Geofence-DemoUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8DF492C3259C531300AAF3DA /* iOS_Geofence_DemoUITests.swift */,
+				8DF492C5259C531300AAF3DA /* Info.plist */,
+			);
+			path = "iOS-Geofence-DemoUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DF4929D259C530F00AAF3DA /* iOS-Geofence-Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DF492C8259C531300AAF3DA /* Build configuration list for PBXNativeTarget "iOS-Geofence-Demo" */;
+			buildPhases = (
+				8DF4929A259C530F00AAF3DA /* Sources */,
+				8DF4929B259C530F00AAF3DA /* Frameworks */,
+				8DF4929C259C530F00AAF3DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "iOS-Geofence-Demo";
+			productName = "iOS-Geofence-Demo";
+			productReference = 8DF4929E259C530F00AAF3DA /* iOS-Geofence-Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8DF492B3259C531300AAF3DA /* iOS-Geofence-DemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DF492CB259C531300AAF3DA /* Build configuration list for PBXNativeTarget "iOS-Geofence-DemoTests" */;
+			buildPhases = (
+				8DF492B0259C531300AAF3DA /* Sources */,
+				8DF492B1259C531300AAF3DA /* Frameworks */,
+				8DF492B2259C531300AAF3DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8DF492B6259C531300AAF3DA /* PBXTargetDependency */,
+			);
+			name = "iOS-Geofence-DemoTests";
+			productName = "iOS-Geofence-DemoTests";
+			productReference = 8DF492B4259C531300AAF3DA /* iOS-Geofence-DemoTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8DF492BE259C531300AAF3DA /* iOS-Geofence-DemoUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8DF492CE259C531300AAF3DA /* Build configuration list for PBXNativeTarget "iOS-Geofence-DemoUITests" */;
+			buildPhases = (
+				8DF492BB259C531300AAF3DA /* Sources */,
+				8DF492BC259C531300AAF3DA /* Frameworks */,
+				8DF492BD259C531300AAF3DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8DF492C1259C531300AAF3DA /* PBXTargetDependency */,
+			);
+			name = "iOS-Geofence-DemoUITests";
+			productName = "iOS-Geofence-DemoUITests";
+			productReference = 8DF492BF259C531300AAF3DA /* iOS-Geofence-DemoUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8DF49296259C530F00AAF3DA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1230;
+				LastUpgradeCheck = 1230;
+				TargetAttributes = {
+					8DF4929D259C530F00AAF3DA = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					8DF492B3259C531300AAF3DA = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = 8DF4929D259C530F00AAF3DA;
+					};
+					8DF492BE259C531300AAF3DA = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = 8DF4929D259C530F00AAF3DA;
+					};
+				};
+			};
+			buildConfigurationList = 8DF49299259C530F00AAF3DA /* Build configuration list for PBXProject "iOS-Geofence-Demo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 8DF49295259C530F00AAF3DA;
+			productRefGroup = 8DF4929F259C530F00AAF3DA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DF4929D259C530F00AAF3DA /* iOS-Geofence-Demo */,
+				8DF492B3259C531300AAF3DA /* iOS-Geofence-DemoTests */,
+				8DF492BE259C531300AAF3DA /* iOS-Geofence-DemoUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8DF4929C259C530F00AAF3DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DF492AE259C531200AAF3DA /* LaunchScreen.storyboard in Resources */,
+				8DF492AB259C531200AAF3DA /* Assets.xcassets in Resources */,
+				8DF492A9259C530F00AAF3DA /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DF492B2259C531300AAF3DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DF492BD259C531300AAF3DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DF4929A259C530F00AAF3DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DF492A6259C530F00AAF3DA /* ViewController.swift in Sources */,
+				8DF492A2259C530F00AAF3DA /* AppDelegate.swift in Sources */,
+				8DF492A4259C530F00AAF3DA /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DF492B0259C531300AAF3DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DF492B9259C531300AAF3DA /* iOS_Geofence_DemoTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8DF492BB259C531300AAF3DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DF492C4259C531300AAF3DA /* iOS_Geofence_DemoUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8DF492B6259C531300AAF3DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DF4929D259C530F00AAF3DA /* iOS-Geofence-Demo */;
+			targetProxy = 8DF492B5259C531300AAF3DA /* PBXContainerItemProxy */;
+		};
+		8DF492C1259C531300AAF3DA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8DF4929D259C530F00AAF3DA /* iOS-Geofence-Demo */;
+			targetProxy = 8DF492C0259C531300AAF3DA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8DF492A7259C530F00AAF3DA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8DF492A8259C530F00AAF3DA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8DF492AC259C531200AAF3DA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8DF492AD259C531200AAF3DA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8DF492C6259C531300AAF3DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8DF492C7259C531300AAF3DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8DF492C9259C531300AAF3DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DP3X7X6DGY;
+				INFOPLIST_FILE = "iOS-Geofence-Demo/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.krish.iOS-Geofence-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		8DF492CA259C531300AAF3DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DP3X7X6DGY;
+				INFOPLIST_FILE = "iOS-Geofence-Demo/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.krish.iOS-Geofence-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8DF492CC259C531300AAF3DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DP3X7X6DGY;
+				INFOPLIST_FILE = "iOS-Geofence-DemoTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.krish.iOS-Geofence-DemoTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS-Geofence-Demo.app/iOS-Geofence-Demo";
+			};
+			name = Debug;
+		};
+		8DF492CD259C531300AAF3DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DP3X7X6DGY;
+				INFOPLIST_FILE = "iOS-Geofence-DemoTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.3;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.krish.iOS-Geofence-DemoTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOS-Geofence-Demo.app/iOS-Geofence-Demo";
+			};
+			name = Release;
+		};
+		8DF492CF259C531300AAF3DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DP3X7X6DGY;
+				INFOPLIST_FILE = "iOS-Geofence-DemoUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.krish.iOS-Geofence-DemoUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "iOS-Geofence-Demo";
+			};
+			name = Debug;
+		};
+		8DF492D0259C531300AAF3DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DP3X7X6DGY;
+				INFOPLIST_FILE = "iOS-Geofence-DemoUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.krish.iOS-Geofence-DemoUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "iOS-Geofence-Demo";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8DF49299259C530F00AAF3DA /* Build configuration list for PBXProject "iOS-Geofence-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DF492C6259C531300AAF3DA /* Debug */,
+				8DF492C7259C531300AAF3DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8DF492C8259C531300AAF3DA /* Build configuration list for PBXNativeTarget "iOS-Geofence-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DF492C9259C531300AAF3DA /* Debug */,
+				8DF492CA259C531300AAF3DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8DF492CB259C531300AAF3DA /* Build configuration list for PBXNativeTarget "iOS-Geofence-DemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DF492CC259C531300AAF3DA /* Debug */,
+				8DF492CD259C531300AAF3DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8DF492CE259C531300AAF3DA /* Build configuration list for PBXNativeTarget "iOS-Geofence-DemoUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DF492CF259C531300AAF3DA /* Debug */,
+				8DF492D0259C531300AAF3DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8DF49296259C530F00AAF3DA /* Project object */;
+}
