@@ -12,7 +12,7 @@ import MapKit
 protocol GeoFenceListControllerFactory {
     func makeViewController() -> GeoFenceViewController
     func makeGeoFenceViewModel() -> GeoFenceViewModel
-    func makeGeoFenceDataSource() -> GeoFenceDataSource
+    func makeGeoFenceDataSource() -> RegionDataSource
 }
 
 open class GeoFenceDependencyContainer: GeoFenceListControllerFactory {
@@ -24,8 +24,8 @@ open class GeoFenceDependencyContainer: GeoFenceListControllerFactory {
         GeoFenceViewModel(makeGeoFenceDataSource())
     }
 
-    func makeGeoFenceDataSource() -> GeoFenceDataSource {
-        GeoFenceDataSource()
+    func makeGeoFenceDataSource() -> RegionDataSource {
+        RegionDataSource()
     }
 }
 
@@ -70,6 +70,8 @@ class GeoFenceViewController: UIViewController {
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         setUpContentView()
+
+        saveData()
     }
 
     func setUpContentView() {
@@ -96,5 +98,20 @@ class GeoFenceViewController: UIViewController {
             mapView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+
+    func saveData() {
+        let id = String().randomString(length: 3)
+        let coordinates = Coordinates(id: id, latitude: "3.1303358056425137", longitude: "101.62857783322326")
+
+        let networkId = String().randomString(length: 3)
+        let hotspot = HotSpot(id: networkId, name: "Network(\(networkId))", radius: 5)
+
+        let regionId = String().randomString(length: 3)
+        let region = RegionObject(id: regionId, title: "Region \(regionId)", radius: 100, coordinates: coordinates, network: hotspot)
+
+        self.viewModel.saveRegionData([region])
+
+        self.viewModel.loadRegions()
     }
 }

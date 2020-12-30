@@ -7,14 +7,35 @@
 
 import Foundation
 
-class GeoFenceDataSource {
-
-}
 
 class GeoFenceViewModel {
-    internal init(_ dataSoruce: GeoFenceDataSource) {
-        self.dataSoruce = dataSoruce
+    internal init(_ dataSoruce: RegionDataSource) {
+        self.dataSource = dataSoruce
     }
-    
-    private var dataSoruce:GeoFenceDataSource
+
+    private var dataSource: RegionDataSource
+
+    private var regions: [RegionObject] = []
+
+    public func saveRegionData(_ regions: [RegionObject]) {
+        dataSource.saveAllRegions(regions) { (results) in
+            switch results {
+            case .success(let results):
+                print(results)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
+    public func loadRegions() {
+        dataSource.loadAllRegions { (result) in
+            switch result {
+            case .success(let results):
+                self.regions = results
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
 }
