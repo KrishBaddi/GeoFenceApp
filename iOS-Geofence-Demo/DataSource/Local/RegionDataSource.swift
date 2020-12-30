@@ -20,7 +20,7 @@ protocol RegionDataSourceProtocol {
 class RegionDataSource: RegionDataSourceProtocol {
 
     func loadAllRegions(_ completion: @escaping (((Result<[RegionObject], DefaultsError>)) -> Void)) {
-        guard let savedData = RegionDefaultManager.shared.loadObject(forKey: .savedRegions), let data = savedData as? Data else {
+            guard let savedData = RegionDefaultManager.shared.loadObject(forKey: .savedRegions), let data = savedData as? Data else {
             completion(Result.failure(.noDataFound))
             return
         }

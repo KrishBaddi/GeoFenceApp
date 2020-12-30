@@ -7,10 +7,11 @@
 
 import Foundation
 import CoreLocation
+import MapKit
 
-struct RegionObject: Codable {
+class RegionObject: NSObject, Codable {
     var id: String
-    var title: String
+    var title: String?
     var radius: Float
     var coordinates: Coordinates
     var network: HotSpot
@@ -23,6 +24,17 @@ struct RegionObject: Codable {
         self.coordinates = coordinates
         self.network = network
         self.created = created
+    }
+}
+
+extension RegionObject {
+    func getCoordinates() -> CLLocationCoordinate2D? {
+        guard let latitude = CLLocationDegrees(self.coordinates.latitude),
+              let longitude = CLLocationDegrees.init(self.coordinates.longitude) else {
+                return nil
+        }
+
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 }
 
