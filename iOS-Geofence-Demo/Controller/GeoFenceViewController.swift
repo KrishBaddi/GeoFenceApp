@@ -41,6 +41,7 @@ class GeoFenceViewController: UIViewController {
     lazy var viewModel = factory.makeGeoFenceViewModel()
     private let factory: Factory
     private var contentView = UIView()
+    var regionObjects: [RegionObject] = []
 
     lazy var mapView: MKMapView = {
         let view = MKMapView()
@@ -80,8 +81,11 @@ class GeoFenceViewController: UIViewController {
 
         mapView.delegate = self
         saveData()
-        LocationService.sharedInstance.startUpdatingLocation()
+        loadAllGeotifications()
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            LocationService.sharedInstance.startUpdatingLocation()
+        }
     }
 
     func setUpContentView() {
@@ -114,6 +118,17 @@ class GeoFenceViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
 
+
+    // MARK: Loading and saving functions
+    func loadAllGeotifications() {
+        regionObjects.removeAll()
+
+        self.viewModel.loadRegions({ (objects) in
+            self.regionObjects = objects
+            self.regionObjects.forEach { self.add($0) }
+        })
+    }
+
     @objc func locationTapped() {
         mapView.zoomToUserLocation()
     }
@@ -130,11 +145,26 @@ class GeoFenceViewController: UIViewController {
 
         self.viewModel.saveRegionData([region])
 
-        self.viewModel.loadRegions()
+    }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.drawOverlays(regionObject: region)
+    // MARK: Functions that update the model/associated views with geotification changes
+    func add(_ region: RegionObject) {
+        if let annotation = region.annotableRegion() {
+            mapView.addAnnotation(annotation)
         }
+
+        addRadiusOverlay(forRegion: region)
+        //updateGeotificationsCount()
+    }
+
+    func remove(_ annotation: RegionAnnotation) {
+
+        mapView.removeAnnotation(annotation)
+        if let region = self.regionObjects.first(where: { $0.id == annotation.regionId }) {
+            removeRadiusOverlay(forRegion: region)
+            regionObjects.removeAll(where: { $0 == region })
+        }
+        //updateGeotificationsCount()
     }
 
 
@@ -142,35 +172,6 @@ class GeoFenceViewController: UIViewController {
         if let coordinates = region.getCoordinates() {
             mapView.addOverlay(MKCircle.init(center: coordinates, radius: CLLocationDistance(region.radius)))
         }
-    }
-
-    func drawOverlays(regionObject: RegionObject) {
-
-        guard let location = regionObject.getCoordinates() else {
-            return
-        }
-
-        let radius = CLLocationDistance(regionObject.radius)
-
-        // startMonitoring
-
-        LocationService.sharedInstance.startMonitoringFor(region: region(with: location, radius: radius))
-        ///
-        let region = MKCoordinateRegion(center: location, latitudinalMeters: 1000, longitudinalMeters: 1000)
-        mapView.setRegion(region, animated: true)
-
-        // add annotation
-
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = location
-        annotation.title = regionObject.title
-        mapView.addAnnotation(annotation)
-
-        // show overlay
-
-        let circle = MKCircle(center: location,
-            radius: radius)
-        mapView.addOverlay(circle)
     }
 
     func region(with coordinate2D: CLLocationCoordinate2D, radius: Double) -> CLCircularRegion {
@@ -234,11 +235,39 @@ extension GeoFenceViewController: MKMapViewDelegate {
             let circleRenderer = MKCircleRenderer(overlay: circleOverlay)
             circleRenderer.fillColor = .red
             circleRenderer.alpha = 0.5
-
+            circleRenderer.lineWidth = 1.0
+            circleRenderer.strokeColor = .red
             return circleRenderer
         }
         return MKOverlayRenderer(overlay: overlay)
 
+    }
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let identifier = "myGeoFence"
+        if annotation is RegionAnnotation {
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+            if annotationView == nil {
+                annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView?.canShowCallout = true
+                let removeButton = UIButton(type: .custom)
+                removeButton.frame = CGRect(x: 0, y: 0, width: 23, height: 23)
+                removeButton.setImage(UIImage(named: "DeleteGeotification")!, for: .normal)
+                annotationView?.leftCalloutAccessoryView = removeButton
+            } else {
+                annotationView?.annotation = annotation
+            }
+            return annotationView
+        }
+        return nil
+    }
+
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        // Delete Region
+        if let annotation = view.annotation as? RegionAnnotation {
+            remove(annotation)
+        }
+        //saveAllGeotifications(
     }
 }
 

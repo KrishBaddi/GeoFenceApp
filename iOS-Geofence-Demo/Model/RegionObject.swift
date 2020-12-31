@@ -27,14 +27,32 @@ class RegionObject: NSObject, Codable {
     }
 }
 
+class RegionAnnotation: NSObject, MKAnnotation {
+    var coordinate: CLLocationCoordinate2D
+    var title: String?
+    var regionId: String
+
+    internal init(coordinate: CLLocationCoordinate2D, title: String? = nil, regionId: String) {
+        self.coordinate = coordinate
+        self.title = title
+        self.regionId = regionId
+    }
+
+}
+
 extension RegionObject {
     func getCoordinates() -> CLLocationCoordinate2D? {
         guard let latitude = CLLocationDegrees(self.coordinates.latitude),
-              let longitude = CLLocationDegrees.init(self.coordinates.longitude) else {
+            let longitude = CLLocationDegrees.init(self.coordinates.longitude) else {
                 return nil
         }
 
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+
+    func annotableRegion() -> RegionAnnotation? {
+        guard let coordinate = self.getCoordinates() else { return nil }
+        return RegionAnnotation(coordinate: coordinate, title: self.title, regionId: self.id)
     }
 }
 

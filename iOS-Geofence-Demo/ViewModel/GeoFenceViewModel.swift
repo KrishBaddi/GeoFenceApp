@@ -28,11 +28,12 @@ class GeoFenceViewModel {
         }
     }
 
-    public func loadRegions() {
+    public func loadRegions(_ completion: (([RegionObject]) -> Void)?) {
         dataSource.loadAllRegions { (result) in
             switch result {
             case .success(let results):
                 self.regions = results
+                completion?(results)
             case .failure(let error):
                 print(error)
             }
