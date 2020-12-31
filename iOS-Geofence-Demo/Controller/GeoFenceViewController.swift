@@ -9,13 +9,17 @@ import UIKit
 import CoreLocation
 import MapKit
 
-protocol GeoFenceListControllerFactory {
+protocol GeoFenceControllerDelegate: class {
+    func addRegion(_ region: RegionObject)
+}
+
+protocol GeoFenceControllerFactory {
     func makeViewController() -> GeoFenceViewController
     func makeGeoFenceViewModel() -> GeoFenceViewModel
     func makeGeoFenceDataSource() -> RegionDataSource
 }
 
-open class GeoFenceDependencyContainer: GeoFenceListControllerFactory {
+open class GeoFenceDependencyContainer: GeoFenceControllerFactory {
     func makeViewController() -> GeoFenceViewController {
         GeoFenceViewController(factory: self)
     }
@@ -36,7 +40,7 @@ class GeoFenceViewController: UIViewController {
 
     // Here we use protocol composition to create a Factory type that includes
     // all the factory protocols that this view controller needs.
-    typealias Factory = GeoFenceListControllerFactory
+    typealias Factory = GeoFenceControllerFactory
 
     lazy var viewModel = factory.makeGeoFenceViewModel()
     private let factory: Factory
@@ -80,8 +84,7 @@ class GeoFenceViewController: UIViewController {
         setupNavigationButtons()
 
         mapView.delegate = self
-        saveData()
-        loadAllGeotifications()
+        loadAllRegions()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             LocationService.sharedInstance.startUpdatingLocation()
@@ -102,7 +105,9 @@ class GeoFenceViewController: UIViewController {
     }
 
     func setupNavigationButtons() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "location"), style: .plain, target: self, action: #selector(self.locationTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "location"), style: .plain, target: self, action: #selector(self.locationTapped))
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "plus"), style: .plain, target: self, action: #selector(self.addRegionTapped))
     }
 
     func setUpMapView() {
@@ -120,12 +125,21 @@ class GeoFenceViewController: UIViewController {
 
 
     // MARK: Loading and saving functions
-    func loadAllGeotifications() {
+    func loadAllRegions() {
         regionObjects.removeAll()
 
-        self.viewModel.loadRegions({ (objects) in
+        self.viewModel.loadRegions({ [weak self] (objects) in
+            guard let self = self else { return }
             self.regionObjects = objects
             self.regionObjects.forEach { self.add($0) }
+
+            if let firstRegion = self.regionObjects.first {
+                self.setVisibleRegion(firstRegion)
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.mapView.zoomToUserLocation()
+                }
+            }
         })
     }
 
@@ -133,18 +147,20 @@ class GeoFenceViewController: UIViewController {
         mapView.zoomToUserLocation()
     }
 
-    func saveData() {
-        let id = String().randomString(length: 3)
-        let coordinates = Coordinates(id: id, latitude: "3.1303358056425137", longitude: "101.62857783322326")
+    @objc func addRegionTapped() {
+        let container = RegionsDependencyContainer(delegate: self)
+        if let viewController = container.makeViewController() {
+            let navController = UINavigationController(rootViewController: viewController)
+            self.present(navController, animated: true, completion: {
+            })
+        }
+    }
 
-        let networkId = String().randomString(length: 3)
-        let hotspot = HotSpot(id: networkId, name: "Network(\(networkId))", radius: 5)
-
-        let regionId = String().randomString(length: 3)
-        let region = RegionObject(id: regionId, title: "Region \(regionId)", radius: 100, coordinates: coordinates, network: hotspot)
-
-        self.viewModel.saveRegionData([region])
-
+    func addNewRegion(_ region: RegionObject) {
+        self.regionObjects.append(region)
+        self.add(region)
+        self.viewModel.saveRegionData(self.regionObjects)
+        self.setVisibleRegion(region)
     }
 
     // MARK: Functions that update the model/associated views with geotification changes
@@ -152,19 +168,22 @@ class GeoFenceViewController: UIViewController {
         if let annotation = region.annotableRegion() {
             mapView.addAnnotation(annotation)
         }
-
         addRadiusOverlay(forRegion: region)
-        //updateGeotificationsCount()
+    }
+
+    func setVisibleRegion(_ region: RegionObject) {
+        // center the mapView on the selected pin
+        let region = MKCoordinateRegion(center: region.getCoordinates()!, latitudinalMeters: 5000, longitudinalMeters: 5000)
+        mapView.setRegion(region, animated: true)
     }
 
     func remove(_ annotation: RegionAnnotation) {
-
         mapView.removeAnnotation(annotation)
         if let region = self.regionObjects.first(where: { $0.id == annotation.regionId }) {
             removeRadiusOverlay(forRegion: region)
             regionObjects.removeAll(where: { $0 == region })
         }
-        //updateGeotificationsCount()
+        self.viewModel.saveRegionData(self.regionObjects)
     }
 
 
@@ -193,8 +212,13 @@ class GeoFenceViewController: UIViewController {
                     break
                 }
             }
-
         }
+    }
+}
+
+extension GeoFenceViewController: GeoFenceControllerDelegate {
+    func addRegion(_ region: RegionObject) {
+        addNewRegion(region)
     }
 }
 
@@ -234,13 +258,12 @@ extension GeoFenceViewController: MKMapViewDelegate {
         if let circleOverlay = overlay as? MKCircle {
             let circleRenderer = MKCircleRenderer(overlay: circleOverlay)
             circleRenderer.fillColor = .red
-            circleRenderer.alpha = 0.5
-            circleRenderer.lineWidth = 1.0
+            circleRenderer.alpha = 0.3
+            circleRenderer.lineWidth = 2.0
             circleRenderer.strokeColor = .red
             return circleRenderer
         }
         return MKOverlayRenderer(overlay: overlay)
-
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

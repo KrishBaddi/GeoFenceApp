@@ -42,12 +42,7 @@ class RegionAnnotation: NSObject, MKAnnotation {
 
 extension RegionObject {
     func getCoordinates() -> CLLocationCoordinate2D? {
-        guard let latitude = CLLocationDegrees(self.coordinates.latitude),
-            let longitude = CLLocationDegrees.init(self.coordinates.longitude) else {
-                return nil
-        }
-
-        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        CLLocationCoordinate2D(latitude: self.coordinates.latitude, longitude: self.coordinates.longitude)
     }
 
     func annotableRegion() -> RegionAnnotation? {
@@ -58,10 +53,10 @@ extension RegionObject {
 
 struct Coordinates: Codable {
     var id: String
-    var latitude: String
-    var longitude: String
+    var latitude: Double
+    var longitude: Double
 
-    internal init(id: String, latitude: String, longitude: String) {
+    internal init(id: String, latitude: Double, longitude: Double) {
         self.id = id
         self.latitude = latitude
         self.longitude = longitude
