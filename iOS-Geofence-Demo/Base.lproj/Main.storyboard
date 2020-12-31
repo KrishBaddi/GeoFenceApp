@@ -91,13 +91,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rlp-yM-ikJ">
-                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="255"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="414" height="400"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="255" id="cNa-CQ-p1B"/>
+                                                        <constraint firstAttribute="height" constant="400" id="cNa-CQ-p1B"/>
                                                     </constraints>
                                                 </mapView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AddPin" translatesAutoresizingMaskIntoConstraints="NO" id="Jtp-sN-nlu">
-                                                    <rect key="frame" x="169.5" y="90" width="75" height="75"/>
+                                                    <rect key="frame" x="169.5" y="162.5" width="75" height="75"/>
                                                 </imageView>
                                             </subviews>
                                             <constraints>

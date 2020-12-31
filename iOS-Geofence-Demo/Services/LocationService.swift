@@ -21,22 +21,28 @@ class LocationService: NSObject, CLLocationManagerDelegate {
 
     static let sharedInstance: LocationService = { LocationService() }()
 
-    var locationManager: CLLocationManager?
+    var locationManager: CLLocationManager
     var lastLocation: CLLocation?
     weak var delegate: LocationServiceDelegate?
 
     override init() {
-        super.init()
-
         self.locationManager = CLLocationManager()
-        guard let locationManager = self.locationManager else {
-            return
-        }
+        super.init()
 //
 //        locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
 //        locationManager.distanceFilter = 100 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
         locationManager.delegate = self
-        locationManagerDidChangeAuthorization(locationManager)
+        locationManager.requestAlwaysAuthorization()
+    }
+
+    func startUpdatingLocation() {
+        print("Starting Location Updates")
+        self.locationManager.startUpdatingLocation()
+    }
+
+    func stopUpdatingLocation() {
+        print("Stop Location Updates")
+        self.locationManager.stopUpdatingLocation()
     }
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
@@ -44,20 +50,10 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         case .authorizedAlways, .authorizedWhenInUse:
             break
         case .notDetermined, .denied, .restricted:
-            manager.requestAlwaysAuthorization()
+            break
         default:
             break
         }
-    }
-
-    func startUpdatingLocation() {
-        print("Starting Location Updates")
-        self.locationManager?.startUpdatingLocation()
-    }
-
-    func stopUpdatingLocation() {
-        print("Stop Location Updates")
-        self.locationManager?.stopUpdatingLocation()
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -81,8 +77,12 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         updateLocationDidFailWithError(error: error)
     }
 
-    public func startMonitoringFor( region: CLRegion) {
-        self.locationManager?.startMonitoring(for: region)
+    public func startMonitoringFor(region: CLRegion) {
+        self.locationManager.startMonitoring(for: region)
+    }
+
+    public func stopMonitoringFor(region: CLRegion) {
+        self.locationManager.stopMonitoring(for: region)
     }
 
     private func updateLocation(currentLocation: CLLocation) {
@@ -99,5 +99,14 @@ class LocationService: NSObject, CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         delegate?.didEnterRegion()
+    }
+}
+
+extension CLLocationManager {
+    func hasLocationPermission() -> Bool {
+        if self.authorizationStatus != .authorizedWhenInUse && self.authorizationStatus != .authorizedAlways {
+            return false
+        }
+        return true
     }
 }

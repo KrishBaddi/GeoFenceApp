@@ -58,6 +58,11 @@ class GeoFenceViewController: UIViewController {
         return view
     }()
 
+    lazy var toolBar: UIToolbar = {
+        let view = UIToolbar()
+        return view
+    }()
+
     init(factory: Factory) {
         self.factory = factory
         super.init(nibName: nil, bundle: nil)
@@ -84,6 +89,7 @@ class GeoFenceViewController: UIViewController {
         setupNavigationButtons()
 
         mapView.delegate = self
+        LocationService.sharedInstance.delegate = self
         loadAllRegions()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -102,6 +108,7 @@ class GeoFenceViewController: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
         setUpMapView()
+        setUpToolBarView()
     }
 
     func setupNavigationButtons() {
@@ -119,6 +126,18 @@ class GeoFenceViewController: UIViewController {
             mapView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             mapView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             mapView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+
+    func setUpToolBarView() {
+        toolBar.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(toolBar)
+
+        let constraints: [NSLayoutConstraint] = [
+            toolBar.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            toolBar.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            toolBar.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -161,6 +180,7 @@ class GeoFenceViewController: UIViewController {
         self.add(region)
         self.viewModel.saveRegionData(self.regionObjects)
         self.setVisibleRegion(region)
+        self.startMonitoring(region)
     }
 
     // MARK: Functions that update the model/associated views with geotification changes
@@ -182,6 +202,7 @@ class GeoFenceViewController: UIViewController {
         if let region = self.regionObjects.first(where: { $0.id == annotation.regionId }) {
             removeRadiusOverlay(forRegion: region)
             regionObjects.removeAll(where: { $0 == region })
+            self.stopMonitoring(region)
         }
         self.viewModel.saveRegionData(self.regionObjects)
     }
@@ -214,6 +235,52 @@ class GeoFenceViewController: UIViewController {
             }
         }
     }
+
+
+    func startMonitoring(_ region: RegionObject) {
+        if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+            showAlert(withTitle: "Error", message: "Geofencing is not supported on this device!")
+            return
+        }
+
+        if !LocationService.sharedInstance.locationManager.hasLocationPermission() {
+            let message = """
+        Your geotification is saved but will only be activated once you grant
+        Geotify permission to access the device location.
+        """
+            showAlert(withTitle: "Warning", message: message)
+        }
+
+        if let fenceRegion = circularRegion(with: region) {
+            LocationService.sharedInstance.startMonitoringFor(region: fenceRegion)
+        }
+
+    }
+
+    func stopMonitoring(_ region: RegionObject) {
+        let regions = LocationService.sharedInstance.locationManager.monitoredRegions
+        regions.forEach({ (fenceRegion) in
+            if fenceRegion.identifier == region.id {
+                LocationService.sharedInstance.stopMonitoringFor(region: fenceRegion)
+            }
+        })
+    }
+
+    func circularRegion(with region: RegionObject) -> CLCircularRegion? {
+        guard let coordinates = region.getCoordinates() else { return nil }
+        let region = CLCircularRegion(center: coordinates, radius: CLLocationDistance(region.radius), identifier: region.id)
+        region.notifyOnEntry = true
+        region.notifyOnExit = true
+        return region
+    }
+
+    func updateStatus(isEntered: Bool) {
+        let status = isEntered ? "Checked In" : "Checked Out"
+        let color = isEntered ? UIColor.darkGray : UIColor.red
+        var buttons = [UIBarButtonItem]()
+        buttons.append(ToolBarTitleItem(text: status, font: UIFont.systemFont(ofSize: 15, weight: .bold), color: color))
+        toolBar.items = buttons
+    }
 }
 
 extension GeoFenceViewController: GeoFenceControllerDelegate {
@@ -224,32 +291,26 @@ extension GeoFenceViewController: GeoFenceControllerDelegate {
 
 extension GeoFenceViewController: LocationServiceDelegate {
     func tracingLocation(currentLocation: CLLocation) {
+        let center = currentLocation.coordinate
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        self.mapView.setRegion(region, animated: true)
     }
 
     func tracingLocationDidFailWithError(error: NSError) {
     }
 
     func didEnterRegion() {
+        self.updateStatus(isEntered: true)
     }
 
     func didExitRegion() {
+        self.updateStatus(isEntered: false)
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         mapView.showsUserLocation = status == .authorizedAlways
     }
-
-
 }
-extension MKMapView {
-    func zoomToUserLocation() {
-        guard let coordinate = userLocation.location?.coordinate else { return }
-        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 10000, longitudinalMeters: 10000)
-        setRegion(region, animated: true)
-    }
-}
-
-
 
 extension GeoFenceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView,
@@ -275,7 +336,7 @@ extension GeoFenceViewController: MKMapViewDelegate {
                 annotationView?.canShowCallout = true
                 let removeButton = UIButton(type: .custom)
                 removeButton.frame = CGRect(x: 0, y: 0, width: 23, height: 23)
-                removeButton.setImage(UIImage(named: "DeleteGeotification")!, for: .normal)
+                removeButton.setImage(UIImage.init(systemName: "xmark.circle"), for: .normal)
                 annotationView?.leftCalloutAccessoryView = removeButton
             } else {
                 annotationView?.annotation = annotation

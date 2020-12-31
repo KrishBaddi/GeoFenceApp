@@ -11,6 +11,9 @@
 		8D793D55259C9C9E00E742A5 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D54259C9C9E00E742A5 /* LocationService.swift */; };
 		8D793D6B259CBAC000E742A5 /* Geotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D6A259CBAC000E742A5 /* Geotification.swift */; };
 		8D793D79259D853000E742A5 /* RegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D78259D853000E742A5 /* RegionsViewController.swift */; };
+		8D793D84259DD50B00E742A5 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D83259DD50A00E742A5 /* UIViewController+Extension.swift */; };
+		8D793D89259DD54A00E742A5 /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D88259DD54A00E742A5 /* MKMapView+Extension.swift */; };
+		8D793D8E259DE3A700E742A5 /* ToolBarTitleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D8D259DE3A700E742A5 /* ToolBarTitleItem.swift */; };
 		8DF492A2259C530F00AAF3DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A1259C530F00AAF3DA /* AppDelegate.swift */; };
 		8DF492A4259C530F00AAF3DA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A3259C530F00AAF3DA /* SceneDelegate.swift */; };
 		8DF492A6259C530F00AAF3DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A5259C530F00AAF3DA /* ViewController.swift */; };
@@ -49,6 +52,9 @@
 		8D793D54259C9C9E00E742A5 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		8D793D6A259CBAC000E742A5 /* Geotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geotification.swift; sourceTree = "<group>"; };
 		8D793D78259D853000E742A5 /* RegionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionsViewController.swift; sourceTree = "<group>"; };
+		8D793D83259DD50A00E742A5 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		8D793D88259DD54A00E742A5 /* MKMapView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Extension.swift"; sourceTree = "<group>"; };
+		8D793D8D259DE3A700E742A5 /* ToolBarTitleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarTitleItem.swift; sourceTree = "<group>"; };
 		8DF4929E259C530F00AAF3DA /* iOS-Geofence-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Geofence-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DF492A1259C530F00AAF3DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DF492A3259C530F00AAF3DA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -201,6 +207,9 @@
 			isa = PBXGroup;
 			children = (
 				8D793D4E259C80C100E742A5 /* String+Extension.swift */,
+				8D793D83259DD50A00E742A5 /* UIViewController+Extension.swift */,
+				8D793D88259DD54A00E742A5 /* MKMapView+Extension.swift */,
+				8D793D8D259DE3A700E742A5 /* ToolBarTitleItem.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -372,6 +381,8 @@
 				8DF492E3259C54E100AAF3DA /* GeoFenceViewModel.swift in Sources */,
 				8DF492E8259C55E100AAF3DA /* UIView+AutoLayout.swift in Sources */,
 				8D793D6B259CBAC000E742A5 /* Geotification.swift in Sources */,
+				8D793D84259DD50B00E742A5 /* UIViewController+Extension.swift in Sources */,
+				8D793D8E259DE3A700E742A5 /* ToolBarTitleItem.swift in Sources */,
 				8DF49306259C7B0600AAF3DA /* RegionDefaultManager.swift in Sources */,
 				8DF492A6259C530F00AAF3DA /* ViewController.swift in Sources */,
 				8DF492A2259C530F00AAF3DA /* AppDelegate.swift in Sources */,
@@ -380,6 +391,7 @@
 				8D793D79259D853000E742A5 /* RegionsViewController.swift in Sources */,
 				8DF492F9259C706900AAF3DA /* RegionObject.swift in Sources */,
 				8D793D4F259C80C100E742A5 /* String+Extension.swift in Sources */,
+				8D793D89259DD54A00E742A5 /* MKMapView+Extension.swift in Sources */,
 				8DF492A4259C530F00AAF3DA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
