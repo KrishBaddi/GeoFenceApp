@@ -67,6 +67,20 @@ class GeoFenceViewController: UIViewController {
         return view
     }()
 
+    lazy var regionStatusView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .red
+        return view
+    }()
+
+    lazy var regionStatusLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .white
+        return label
+    }()
+
     lazy var toolBar: UIToolbar = {
         let view = UIToolbar()
         return view
@@ -105,6 +119,8 @@ class GeoFenceViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             LocationService.sharedInstance.startUpdatingLocation()
         }
+
+
     }
 
     func setUpContentView() {
@@ -120,6 +136,7 @@ class GeoFenceViewController: UIViewController {
         setUpMapView()
         setUpToolBarView()
         addToolBarButton()
+        addRegionStatusView()
     }
 
     func setupNavigationButtons() {
@@ -160,6 +177,28 @@ class GeoFenceViewController: UIViewController {
             toolBar.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+
+    func addRegionStatusView() {
+        contentView.addSubview(regionStatusView)
+        let constraints: [NSLayoutConstraint] = [
+            regionStatusView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            regionStatusView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            regionStatusView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -40),
+            regionStatusView.heightAnchor.constraint(equalToConstant: 50)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        regionStatusView.layer.cornerRadius = 25
+
+        regionStatusView.addSubview(regionStatusLabel)
+        regionStatusLabel.text = "saasdfashfasdfjasdfb"
+        let constraints1: [NSLayoutConstraint] = [
+            regionStatusLabel.centerYAnchor.constraint(equalTo: regionStatusView.centerYAnchor),
+            regionStatusLabel.centerXAnchor.constraint(equalTo: regionStatusView.centerXAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints1)
+
+        regionStatusView.isHidden = true
     }
 
 
@@ -308,11 +347,35 @@ class GeoFenceViewController: UIViewController {
 
     func updateWifiStatus(isConnected: Bool, name: String? = nil) {
         if isConnected {
+            self.toolBar.items = []
             statusButton = ToolBarTitleItem(text: "Connected to: \(String(describing: name ?? ""))", font: .systemFont(ofSize: 15), color: UIColor.darkGray)
             toolBar.items?.append(statusButton)
+            addToolBarButton()
         } else {
             addToolBarButton()
         }
+    }
+
+
+    func isShowRegionNotification(status: Bool, _ regionName: String?) {
+
+        let text = status ? "Entered into '\(regionName ?? "")'" : "Exited from the region"
+        regionStatusLabel.text = text
+
+        if status {
+            regionStatusView.backgroundColor = UIColor.red
+            self.regionStatusView.showHideView()
+        } else {
+            regionStatusView.backgroundColor = UIColor.red
+            self.regionStatusView.showHideView()
+        }
+    }
+
+    func isShowWifiNotification(_ isConnected: Bool, _ networkName: String?) {
+        let status = isConnected ? "Wifi: connnected to '\(networkName ?? "")'" : "Wifi disconnected"
+        regionStatusLabel.text = status
+        regionStatusView.backgroundColor = UIColor.red
+        self.regionStatusView.showHideView()
     }
 }
 
@@ -352,19 +415,22 @@ extension GeoFenceViewController: LocationServiceDelegate {
 
 extension GeoFenceViewController: GeoFenceDetectorServiceDelegate {
     func connectedToWifi(_ networkName: String) {
+        isShowWifiNotification(true, networkName)
         updateWifiStatus(isConnected: true, name: networkName)
     }
 
     func wifiDisconnected() {
+        isShowWifiNotification(false, nil)
         updateWifiStatus(isConnected: false)
     }
 
     func didEnteredRegion(_ name: String) {
         print("Entered into region \(name)")
+        isShowRegionNotification(status: true, name)
     }
 
     func didExitRegion() {
-        print("Exited the region")
+        isShowRegionNotification(status: false, nil)
     }
 }
 
