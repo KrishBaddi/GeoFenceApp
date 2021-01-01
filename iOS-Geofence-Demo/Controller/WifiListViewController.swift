@@ -60,6 +60,7 @@ class WifiListViewController: UIViewController {
     var addButton: UIBarButtonItem!
 
 
+    @IBOutlet weak var bkgView: UIView!
     @IBOutlet weak var tableView: UITableView!
 
     init?(coder: NSCoder, factory: Factory) {
@@ -81,6 +82,12 @@ class WifiListViewController: UIViewController {
         tableView?.tableFooterView = UIView()
         viewModel.delegate = self
         loadData()
+        setupView()
+    }
+
+
+    func setupView()  {
+        bkgView.layer.cornerRadius = 4
     }
 
     func loadData() {

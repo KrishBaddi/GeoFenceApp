@@ -221,9 +221,6 @@
 		8DF492D8259C53F800AAF3DA /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				8D793D4E259C80C100E742A5 /* String+Extension.swift */,
-				8D793D83259DD50A00E742A5 /* UIViewController+Extension.swift */,
-				8D793D88259DD54A00E742A5 /* MKMapView+Extension.swift */,
 				8D793D8D259DE3A700E742A5 /* ToolBarTitleItem.swift */,
 			);
 			path = Helper;
@@ -232,6 +229,9 @@
 		8DF492D9259C53FD00AAF3DA /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				8D793D4E259C80C100E742A5 /* String+Extension.swift */,
+				8D793D83259DD50A00E742A5 /* UIViewController+Extension.swift */,
+				8D793D88259DD54A00E742A5 /* MKMapView+Extension.swift */,
 				8DF492E7259C55E100AAF3DA /* UIView+AutoLayout.swift */,
 			);
 			path = Extensions;

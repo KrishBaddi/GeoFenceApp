@@ -172,7 +172,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KVd-Ci-XxO">
-                                <rect key="frame" x="0.0" y="522" width="414" height="374"/>
+                                <rect key="frame" x="0.0" y="615" width="414" height="281"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QJN-hn-IJO">
                                         <rect key="frame" x="0.0" y="8" width="414" height="44"/>
@@ -209,16 +209,16 @@
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c7I-wU-pQn">
                                         <rect key="frame" x="0.0" y="52" width="414" height="1"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="LmW-ZM-46j"/>
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="47" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="gcn-tx-f1a">
-                                        <rect key="frame" x="0.0" y="53" width="414" height="321"/>
+                                        <rect key="frame" x="0.0" y="53" width="414" height="200"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="321" id="zYo-fD-FQ4"/>
+                                            <constraint firstAttribute="height" constant="200" id="zYo-fD-FQ4"/>
                                         </constraints>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="WifiTableCell" rowHeight="47" id="2hw-HZ-ziD" customClass="WifiTableCell" customModule="iOS_Geofence_Demo" customModuleProvider="target">
@@ -272,7 +272,7 @@
                                     <constraint firstItem="gcn-tx-f1a" firstAttribute="leading" secondItem="KVd-Ci-XxO" secondAttribute="leading" id="X25-Fp-iQr"/>
                                     <constraint firstAttribute="trailing" secondItem="c7I-wU-pQn" secondAttribute="trailing" id="apy-Ld-TZB"/>
                                     <constraint firstAttribute="trailing" secondItem="QJN-hn-IJO" secondAttribute="trailing" id="br7-j3-Of9"/>
-                                    <constraint firstAttribute="bottom" secondItem="gcn-tx-f1a" secondAttribute="bottom" id="gUW-iI-yYf"/>
+                                    <constraint firstAttribute="bottom" secondItem="gcn-tx-f1a" secondAttribute="bottom" constant="28" id="gUW-iI-yYf"/>
                                     <constraint firstItem="QJN-hn-IJO" firstAttribute="leading" secondItem="KVd-Ci-XxO" secondAttribute="leading" id="jzT-iT-6KK"/>
                                     <constraint firstAttribute="trailing" secondItem="gcn-tx-f1a" secondAttribute="trailing" id="lJl-m3-pOx"/>
                                 </constraints>
@@ -288,6 +288,7 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="bkgView" destination="KVd-Ci-XxO" id="4gn-b1-bHB"/>
                         <outlet property="tableView" destination="gcn-tx-f1a" id="THN-hd-a6P"/>
                     </connections>
                 </viewController>
@@ -12878,6 +12879,9 @@ AAAAAAAAVQAAAAAAAAAAAAAAAAALgTM
         <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
