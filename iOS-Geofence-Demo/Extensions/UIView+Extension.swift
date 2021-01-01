@@ -10,6 +10,11 @@ import UIKit
 
 extension UIView {
     func animShow() {
+        let frame = self.frame
+        let newFrame = CGRect.init(x: frame.minX, y: -40, width: frame.width, height: frame.height)
+        self.frame = newFrame
+        self.isHidden = true
+
         UIView.animate(withDuration: 0.5, delay: 0, options: [.curveLinear],
             animations: {
                 self.center.y += self.bounds.height

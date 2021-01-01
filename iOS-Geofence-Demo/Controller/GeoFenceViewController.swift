@@ -119,8 +119,6 @@ class GeoFenceViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             LocationService.sharedInstance.startUpdatingLocation()
         }
-
-
     }
 
     func setUpContentView() {
@@ -148,6 +146,13 @@ class GeoFenceViewController: UIViewController {
     func addToolBarButton() {
         wifiButton = UIBarButtonItem(image: UIImage(systemName: "wifi"), style: .plain, target: self, action: #selector(connectWifiTapped))
         toolBar.items = [wifiButton]
+
+        statusButton = ToolBarTitleItem(text: "", font: .systemFont(ofSize: 15), color: UIColor.darkGray)
+
+        toolBar.items = []
+        toolBar.items?.append(wifiButton)
+        toolBar.items?.append(statusButton)
+        self.updateWifiButton(self.regionObjects.count > 0)
     }
 
     func updateWifiButton(_ isEnabled: Bool) {
@@ -218,7 +223,7 @@ class GeoFenceViewController: UIViewController {
                     self.mapView.zoomToUserLocation()
                 }
             }
-
+            self.addToolBarButton()
             self.updateWifiButton(self.regionObjects.count > 0)
         })
     }
@@ -251,6 +256,7 @@ class GeoFenceViewController: UIViewController {
         self.viewModel.saveRegionData(self.regionObjects)
         self.setVisibleRegion(region)
         self.startMonitoring(region)
+        self.updateWifiButton(self.regionObjects.count > 0)
     }
 
     // MARK: Functions that update the model/associated views with geotification changes
@@ -307,7 +313,6 @@ class GeoFenceViewController: UIViewController {
         }
     }
 
-
     func startMonitoring(_ region: RegionObject) {
         if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             showAlert(withTitle: "Error", message: "Geofencing is not supported on this device!")
@@ -325,7 +330,6 @@ class GeoFenceViewController: UIViewController {
         if let fenceRegion = circularRegion(with: region) {
             LocationService.sharedInstance.startMonitoringFor(region: fenceRegion)
         }
-
     }
 
     func stopMonitoring(_ region: RegionObject) {
@@ -346,16 +350,9 @@ class GeoFenceViewController: UIViewController {
     }
 
     func updateWifiStatus(isConnected: Bool, name: String? = nil) {
-        if isConnected {
-            self.toolBar.items = []
-            statusButton = ToolBarTitleItem(text: "Connected to: \(String(describing: name ?? ""))", font: .systemFont(ofSize: 15), color: UIColor.darkGray)
-            toolBar.items?.append(statusButton)
-            addToolBarButton()
-        } else {
-            addToolBarButton()
-        }
+        let titleText = "Wifi: \(String(describing: name ?? ""))"
+        self.title = isConnected ? titleText : ""
     }
-
 
     func isShowRegionNotification(status: Bool, _ regionName: String?) {
 

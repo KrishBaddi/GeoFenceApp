@@ -64,7 +64,6 @@ class RegionsViewController: UITableViewController {
     @IBOutlet weak var networkName: UITextField!
     @IBOutlet weak var mapView: MKMapView!
 
-
     init?(coder: NSCoder, factory: Factory) {
         self.factory = factory
         super.init(coder: coder)

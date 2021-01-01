@@ -59,7 +59,6 @@ class WifiListViewController: UIViewController {
     private var contentView = UIView()
     var addButton: UIBarButtonItem!
 
-
     @IBOutlet weak var bkgView: UIView!
     @IBOutlet weak var tableView: UITableView!
 
@@ -84,7 +83,6 @@ class WifiListViewController: UIViewController {
         loadData()
         setupView()
     }
-
 
     func setupView()  {
         bkgView.layer.cornerRadius = 4
@@ -111,7 +109,6 @@ class WifiListViewController: UIViewController {
     }
 }
 
-
 extension WifiListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return wifiList.count
@@ -124,13 +121,10 @@ extension WifiListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         didSelectWifi(self.wifiList[indexPath.row])
     }
 }
-
-
 
 extension WifiListViewController: WifiListViewModelDelegate {
     func getAllHotSpots(_ hotspots: [HotSpot]) {
