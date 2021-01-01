@@ -37,7 +37,6 @@ class RegionAnnotation: NSObject, MKAnnotation {
         self.title = title
         self.regionId = regionId
     }
-
 }
 
 extension RegionObject {
@@ -63,7 +62,7 @@ struct Coordinates: Codable {
     }
 }
 
-struct HotSpot: Codable {
+struct HotSpot: Codable, Equatable {
     var id: String
     var name: String
     var radius: Float

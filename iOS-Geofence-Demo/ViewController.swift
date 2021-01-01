@@ -9,6 +9,14 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    lazy var button: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
+    private var contentView = UIView()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.

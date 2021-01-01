@@ -11,8 +11,8 @@ import CoreLocation
 protocol LocationServiceDelegate: class {
     func tracingLocation(currentLocation: CLLocation)
     func tracingLocationDidFailWithError(error: NSError)
-    func didEnterRegion()
-    func didExitRegion()
+    func didEnterIntoRegion(region: CLRegion)
+    func didExitIntoRegion(region: CLRegion)
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus)
 }
 
@@ -94,11 +94,11 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        delegate?.didExitRegion()
+        delegate?.didExitIntoRegion(region: region)
     }
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        delegate?.didEnterRegion()
+        delegate?.didEnterIntoRegion(region: region)
     }
 }
 

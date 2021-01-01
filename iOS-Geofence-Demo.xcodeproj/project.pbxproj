@@ -14,6 +14,11 @@
 		8D793D84259DD50B00E742A5 /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D83259DD50A00E742A5 /* UIViewController+Extension.swift */; };
 		8D793D89259DD54A00E742A5 /* MKMapView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D88259DD54A00E742A5 /* MKMapView+Extension.swift */; };
 		8D793D8E259DE3A700E742A5 /* ToolBarTitleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D8D259DE3A700E742A5 /* ToolBarTitleItem.swift */; };
+		8D793D93259EBA0A00E742A5 /* RegionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D92259EBA0A00E742A5 /* RegionsViewModel.swift */; };
+		8D793D98259EC88B00E742A5 /* WifiListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D97259EC88B00E742A5 /* WifiListViewController.swift */; };
+		8D793D9D259EC8D800E742A5 /* WifiListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D9C259EC8D800E742A5 /* WifiListViewModel.swift */; };
+		8D793DA2259ECB6900E742A5 /* WifiTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793DA1259ECB6900E742A5 /* WifiTableCell.swift */; };
+		8D793DA7259EDB4C00E742A5 /* GeoFenceDetectorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793DA6259EDB4C00E742A5 /* GeoFenceDetectorService.swift */; };
 		8DF492A2259C530F00AAF3DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A1259C530F00AAF3DA /* AppDelegate.swift */; };
 		8DF492A4259C530F00AAF3DA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A3259C530F00AAF3DA /* SceneDelegate.swift */; };
 		8DF492A6259C530F00AAF3DA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF492A5259C530F00AAF3DA /* ViewController.swift */; };
@@ -55,6 +60,11 @@
 		8D793D83259DD50A00E742A5 /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		8D793D88259DD54A00E742A5 /* MKMapView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Extension.swift"; sourceTree = "<group>"; };
 		8D793D8D259DE3A700E742A5 /* ToolBarTitleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolBarTitleItem.swift; sourceTree = "<group>"; };
+		8D793D92259EBA0A00E742A5 /* RegionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionsViewModel.swift; sourceTree = "<group>"; };
+		8D793D97259EC88B00E742A5 /* WifiListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiListViewController.swift; sourceTree = "<group>"; };
+		8D793D9C259EC8D800E742A5 /* WifiListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiListViewModel.swift; sourceTree = "<group>"; };
+		8D793DA1259ECB6900E742A5 /* WifiTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiTableCell.swift; sourceTree = "<group>"; };
+		8D793DA6259EDB4C00E742A5 /* GeoFenceDetectorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoFenceDetectorService.swift; sourceTree = "<group>"; };
 		8DF4929E259C530F00AAF3DA /* iOS-Geofence-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS-Geofence-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DF492A1259C530F00AAF3DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8DF492A3259C530F00AAF3DA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -106,6 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				8D793D54259C9C9E00E742A5 /* LocationService.swift */,
+				8D793DA6259EDB4C00E742A5 /* GeoFenceDetectorService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -173,6 +184,7 @@
 		8DF492D4259C53D900AAF3DA /* View */ = {
 			isa = PBXGroup;
 			children = (
+				8D793DA1259ECB6900E742A5 /* WifiTableCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -181,6 +193,8 @@
 			isa = PBXGroup;
 			children = (
 				8DF492E2259C54E100AAF3DA /* GeoFenceViewModel.swift */,
+				8D793D92259EBA0A00E742A5 /* RegionsViewModel.swift */,
+				8D793D9C259EC8D800E742A5 /* WifiListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -199,6 +213,7 @@
 			children = (
 				8DF492DA259C545400AAF3DA /* GeoFenceViewController.swift */,
 				8D793D78259D853000E742A5 /* RegionsViewController.swift */,
+				8D793D97259EC88B00E742A5 /* WifiListViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -378,15 +393,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DF49301259C779A00AAF3DA /* RegionDataSource.swift in Sources */,
+				8D793DA2259ECB6900E742A5 /* WifiTableCell.swift in Sources */,
+				8D793D98259EC88B00E742A5 /* WifiListViewController.swift in Sources */,
 				8DF492E3259C54E100AAF3DA /* GeoFenceViewModel.swift in Sources */,
 				8DF492E8259C55E100AAF3DA /* UIView+AutoLayout.swift in Sources */,
 				8D793D6B259CBAC000E742A5 /* Geotification.swift in Sources */,
 				8D793D84259DD50B00E742A5 /* UIViewController+Extension.swift in Sources */,
 				8D793D8E259DE3A700E742A5 /* ToolBarTitleItem.swift in Sources */,
+				8D793D9D259EC8D800E742A5 /* WifiListViewModel.swift in Sources */,
+				8D793DA7259EDB4C00E742A5 /* GeoFenceDetectorService.swift in Sources */,
 				8DF49306259C7B0600AAF3DA /* RegionDefaultManager.swift in Sources */,
 				8DF492A6259C530F00AAF3DA /* ViewController.swift in Sources */,
 				8DF492A2259C530F00AAF3DA /* AppDelegate.swift in Sources */,
 				8D793D55259C9C9E00E742A5 /* LocationService.swift in Sources */,
+				8D793D93259EBA0A00E742A5 /* RegionsViewModel.swift in Sources */,
 				8DF492DB259C545400AAF3DA /* GeoFenceViewController.swift in Sources */,
 				8D793D79259D853000E742A5 /* RegionsViewController.swift in Sources */,
 				8DF492F9259C706900AAF3DA /* RegionObject.swift in Sources */,

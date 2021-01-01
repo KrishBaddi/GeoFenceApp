@@ -11,6 +11,8 @@ import MapKit
 
 protocol GeoFenceControllerDelegate: class {
     func addRegion(_ region: RegionObject)
+    func wifiConnected(_ hotspot: HotSpot)
+    func disconnectWifi()
 }
 
 protocol GeoFenceControllerFactory {
@@ -25,11 +27,15 @@ open class GeoFenceDependencyContainer: GeoFenceControllerFactory {
     }
 
     func makeGeoFenceViewModel() -> GeoFenceViewModel {
-        GeoFenceViewModel(makeGeoFenceDataSource())
+        GeoFenceViewModel(makeGeoFenceDataSource(), makeFenceDetectorService())
     }
 
     func makeGeoFenceDataSource() -> RegionDataSource {
         RegionDataSource()
+    }
+
+    func makeFenceDetectorService() -> GeoFenceDetectorService {
+        GeoFenceDetectorService()
     }
 }
 
@@ -90,6 +96,7 @@ class GeoFenceViewController: UIViewController {
 
         mapView.delegate = self
         LocationService.sharedInstance.delegate = self
+        viewModel.setDetectorDelegate(delegate: self)
         loadAllRegions()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -115,6 +122,10 @@ class GeoFenceViewController: UIViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "location"), style: .plain, target: self, action: #selector(self.locationTapped))
 
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "plus"), style: .plain, target: self, action: #selector(self.addRegionTapped))
+
+        var buttons = [UIBarButtonItem]()
+        buttons.append(UIBarButtonItem(image: UIImage(systemName: "wifi"), style: .plain, target: self, action: #selector(connectWifiTapped)))
+        toolBar.items = buttons
     }
 
     func setUpMapView() {
@@ -171,6 +182,14 @@ class GeoFenceViewController: UIViewController {
         if let viewController = container.makeViewController() {
             let navController = UINavigationController(rootViewController: viewController)
             self.present(navController, animated: true, completion: {
+            })
+        }
+    }
+
+    @objc func connectWifiTapped() {
+        let container = WifiListDependencyContainer(delegate: self)
+        if let viewController = container.makeViewController() {
+            self.present(viewController, animated: true, completion: {
             })
         }
     }
@@ -274,41 +293,67 @@ class GeoFenceViewController: UIViewController {
         return region
     }
 
-    func updateStatus(isEntered: Bool) {
-        let status = isEntered ? "Checked In" : "Checked Out"
-        let color = isEntered ? UIColor.darkGray : UIColor.red
-        var buttons = [UIBarButtonItem]()
-        buttons.append(ToolBarTitleItem(text: status, font: UIFont.systemFont(ofSize: 15, weight: .bold), color: color))
-        toolBar.items = buttons
-    }
+//    func updateStatus(isEntered: Bool) {
+//        let status = isEntered ? "Checked In" : "Checked Out"
+//        let color = isEntered ? UIColor.darkGray : UIColor.red
+//        var buttons = [UIBarButtonItem]()
+//        buttons.append(ToolBarTitleItem(text: status, font: UIFont.systemFont(ofSize: 15, weight: .bold), color: color))
+//        toolBar.items = buttons
+//    }
 }
 
 extension GeoFenceViewController: GeoFenceControllerDelegate {
+    func disconnectWifi() {
+        viewModel.disconnectWifi()
+    }
+
+    func wifiConnected(_ hotspot: HotSpot) {
+        viewModel.connectWifi(hotspot)
+    }
+
     func addRegion(_ region: RegionObject) {
         addNewRegion(region)
     }
 }
 
 extension GeoFenceViewController: LocationServiceDelegate {
+    func didEnterIntoRegion(region: CLRegion) {
+        viewModel.didEnterRegion(region)
+    }
+
+    func didExitIntoRegion(region: CLRegion) {
+        viewModel.didExitRegion(region)
+    }
+
     func tracingLocation(currentLocation: CLLocation) {
         let center = currentLocation.coordinate
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-        self.mapView.setRegion(region, animated: true)
+        //self.mapView.setRegion(region, animated: true)
     }
 
     func tracingLocationDidFailWithError(error: NSError) {
     }
 
-    func didEnterRegion() {
-        self.updateStatus(isEntered: true)
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        mapView.showsUserLocation = status == .authorizedAlways
+    }
+}
+
+extension GeoFenceViewController: GeoFenceDetectorServiceDelegate {
+    func connectedToWifi(_ networkName: String) {
+        print("Connected to wifi \(networkName)")
+    }
+
+    func wifiDisconnected() {
+        print("Wifi is disconnected")
+    }
+
+    func didEnteredRegion(_ name: String) {
+        print("Entered into region \(name)")
     }
 
     func didExitRegion() {
-        self.updateStatus(isEntered: false)
-    }
-
-    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        mapView.showsUserLocation = status == .authorizedAlways
+        print("Exited the region")
     }
 }
 
