@@ -19,8 +19,6 @@ protocol LocationServiceDelegate: class {
 
 class LocationService: NSObject, CLLocationManagerDelegate {
 
-    static let sharedInstance: LocationService = { LocationService() }()
-
     var locationManager: CLLocationManager
     var lastLocation: CLLocation?
     weak var delegate: LocationServiceDelegate?
@@ -33,6 +31,11 @@ class LocationService: NSObject, CLLocationManagerDelegate {
 //        locationManager.distanceFilter = 100 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+
+    func setDelegate(_ delegate: LocationServiceDelegate) {
+        self.delegate = delegate
     }
 
     func startUpdatingLocation() {

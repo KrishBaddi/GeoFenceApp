@@ -23,11 +23,23 @@ class GeoFenceViewModel {
         self.fenceDetector.setDelegate(delegate: delegate)
     }
 
-    public func saveRegionData(_ regions: [RegionObject]) {
+    public func saveRegionData(_ region: RegionObject) {
+        self.regions.append(region)
         dataSource.saveAllRegions(regions) { (results) in
             switch results {
-            case .success(let results):
-                print(results)
+            case .success(let _):
+                break
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+
+    public func saveAllRegion() {
+        dataSource.saveAllRegions(regions) { (results) in
+            switch results {
+            case .success(let _):
+                break
             case .failure(let error):
                 print(error)
             }
@@ -47,29 +59,34 @@ class GeoFenceViewModel {
     }
 
 
-    public func getAllRegions() {
-        // Return using the delegate
+    public func getAllRegions() -> [RegionObject] {
+        self.regions
     }
 
     public func deleteRegion(_ id: String) {
-        // referesh the data using delegate
+        if let index = self.regions.firstIndex(where: { $0.id == id }) {
+            self.regions.remove(at: index)
+            self.saveAllRegion()
+        }
     }
 
     func connectWifi(_ hotspot: HotSpot) {
-        fenceDetector.currentWifi = hotspot
+        if let regionObject = self.regions.first(where: { $0.network == hotspot }) {
+            fenceDetector.setCurrentWifi(regionObject, hotspot)
+        }
     }
 
     func disconnectWifi() {
-        fenceDetector.currentWifi = nil
+        fenceDetector.disconnectWifi()
     }
 
     func didEnterRegion(_ region: CLRegion) {
         if let regionObject = self.regions.first(where: { $0.id == region.identifier }) {
-            fenceDetector.currentRegion = regionObject
+            fenceDetector.setCurrentRegion(regionObject)
         }
     }
 
     func didExitRegion(_ region: CLRegion) {
-        fenceDetector.currentRegion = nil
+        fenceDetector.exitedRegion()
     }
 }

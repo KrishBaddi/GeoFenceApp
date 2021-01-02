@@ -9,7 +9,7 @@ import Foundation
 import CoreLocation
 import MapKit
 
-class RegionObject: NSObject, Codable {
+struct RegionObject: Codable {
     var id: String
     var title: String?
     var radius: Float

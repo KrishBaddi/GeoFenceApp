@@ -19,6 +19,7 @@ protocol GeoFenceControllerFactory {
     func makeViewController() -> GeoFenceViewController
     func makeGeoFenceViewModel() -> GeoFenceViewModel
     func makeGeoFenceDataSource() -> RegionDataSource
+    func makeLocationService() -> LocationService
 }
 
 open class GeoFenceDependencyContainer: GeoFenceControllerFactory {
@@ -37,6 +38,10 @@ open class GeoFenceDependencyContainer: GeoFenceControllerFactory {
     func makeFenceDetectorService() -> GeoFenceDetectorService {
         GeoFenceDetectorService()
     }
+
+    func makeLocationService() -> LocationService {
+        LocationService()
+    }
 }
 
 
@@ -49,9 +54,10 @@ class GeoFenceViewController: UIViewController {
     typealias Factory = GeoFenceControllerFactory
 
     lazy var viewModel = factory.makeGeoFenceViewModel()
+    lazy var locationService = factory.makeLocationService()
     private let factory: Factory
     private var contentView = UIView()
-    var regionObjects: [RegionObject] = []
+    //var regionObjects: [RegionObject] = []
 
     private var wifiButton: UIBarButtonItem!
     private var statusButton: ToolBarTitleItem!
@@ -112,13 +118,9 @@ class GeoFenceViewController: UIViewController {
         setupNavigationButtons()
 
         mapView.delegate = self
-        LocationService.sharedInstance.delegate = self
+        locationService.delegate = self
         viewModel.setDetectorDelegate(delegate: self)
         loadAllRegions()
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            LocationService.sharedInstance.startUpdatingLocation()
-        }
     }
 
     func setUpContentView() {
@@ -152,7 +154,7 @@ class GeoFenceViewController: UIViewController {
         toolBar.items = []
         toolBar.items?.append(wifiButton)
         toolBar.items?.append(statusButton)
-        self.updateWifiButton(self.regionObjects.count > 0)
+        self.updateWifiButton(self.viewModel.getAllRegions().count > 0)
     }
 
     func updateWifiButton(_ isEnabled: Bool) {
@@ -209,14 +211,12 @@ class GeoFenceViewController: UIViewController {
 
     // MARK: Loading and saving functions
     func loadAllRegions() {
-        regionObjects.removeAll()
 
         self.viewModel.loadRegions({ [weak self] (objects) in
             guard let self = self else { return }
-            self.regionObjects = objects
-            self.regionObjects.forEach { self.add($0) }
+            objects.forEach { self.add($0) }
 
-            if let firstRegion = self.regionObjects.first {
+            if let firstRegion = objects.first {
                 self.setVisibleRegion(firstRegion)
             } else {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -224,7 +224,7 @@ class GeoFenceViewController: UIViewController {
                 }
             }
             self.addToolBarButton()
-            self.updateWifiButton(self.regionObjects.count > 0)
+            self.updateWifiButton(objects.count > 0)
         })
     }
 
@@ -242,7 +242,7 @@ class GeoFenceViewController: UIViewController {
     }
 
     @objc func connectWifiTapped() {
-        let container = WifiListDependencyContainer(delegate: self)
+        let container = WifiListDependencyContainer(delegate: self, regionObjects: viewModel.getAllRegions())
         if let viewController = container.makeViewController() {
             viewController.modalPresentationStyle = .overFullScreen
             self.present(viewController, animated: true, completion: {
@@ -251,12 +251,10 @@ class GeoFenceViewController: UIViewController {
     }
 
     func addNewRegion(_ region: RegionObject) {
-        self.regionObjects.append(region)
         self.add(region)
-        self.viewModel.saveRegionData(self.regionObjects)
+        self.viewModel.saveRegionData(region)
         self.setVisibleRegion(region)
-        self.startMonitoring(region)
-        self.updateWifiButton(self.regionObjects.count > 0)
+        self.updateWifiButton(self.viewModel.getAllRegions().count > 0)
     }
 
     // MARK: Functions that update the model/associated views with geotification changes
@@ -265,6 +263,7 @@ class GeoFenceViewController: UIViewController {
             mapView.addAnnotation(annotation)
         }
         addRadiusOverlay(forRegion: region)
+        self.startMonitoring(region)
     }
 
     func setVisibleRegion(_ region: RegionObject) {
@@ -275,13 +274,13 @@ class GeoFenceViewController: UIViewController {
 
     func remove(_ annotation: RegionAnnotation) {
         mapView.removeAnnotation(annotation)
-        if let region = self.regionObjects.first(where: { $0.id == annotation.regionId }) {
+
+        if let region = self.viewModel.getAllRegions().first(where: { $0.id == annotation.regionId }) {
             removeRadiusOverlay(forRegion: region)
-            regionObjects.removeAll(where: { $0 == region })
+            viewModel.deleteRegion(region.id)
             self.stopMonitoring(region)
-            self.updateWifiButton(self.regionObjects.count > 0)
+            self.updateWifiButton(self.viewModel.getAllRegions().count > 0)
         }
-        self.viewModel.saveRegionData(self.regionObjects)
     }
 
 
@@ -319,7 +318,7 @@ class GeoFenceViewController: UIViewController {
             return
         }
 
-        if !LocationService.sharedInstance.locationManager.hasLocationPermission() {
+        if !locationService.locationManager.hasLocationPermission() {
             let message = """
         Your geotification is saved but will only be activated once you grant
         Geotify permission to access the device location.
@@ -328,15 +327,15 @@ class GeoFenceViewController: UIViewController {
         }
 
         if let fenceRegion = circularRegion(with: region) {
-            LocationService.sharedInstance.startMonitoringFor(region: fenceRegion)
+            locationService.startMonitoringFor(region: fenceRegion)
         }
     }
 
     func stopMonitoring(_ region: RegionObject) {
-        let regions = LocationService.sharedInstance.locationManager.monitoredRegions
+        let regions = locationService.locationManager.monitoredRegions
         regions.forEach({ (fenceRegion) in
             if fenceRegion.identifier == region.id {
-                LocationService.sharedInstance.stopMonitoringFor(region: fenceRegion)
+                locationService.stopMonitoringFor(region: fenceRegion)
             }
         })
     }
@@ -412,17 +411,14 @@ extension GeoFenceViewController: LocationServiceDelegate {
 
 extension GeoFenceViewController: GeoFenceDetectorServiceDelegate {
     func connectedToWifi(_ networkName: String) {
-        isShowWifiNotification(true, networkName)
         updateWifiStatus(isConnected: true, name: networkName)
     }
 
     func wifiDisconnected() {
-        isShowWifiNotification(false, nil)
         updateWifiStatus(isConnected: false)
     }
 
     func didEnteredRegion(_ name: String) {
-        print("Entered into region \(name)")
         isShowRegionNotification(status: true, name)
     }
 

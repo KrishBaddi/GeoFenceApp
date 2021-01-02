@@ -11,16 +11,18 @@ import UIKit
 protocol WifiListControllerFactory {
     func makeViewController() -> WifiListViewController?
     func makeWifiListViewModel() -> WifiListViewModel
-    func makeWifiListDataSource() -> RegionDataSource
+    func makeWifiList() -> [RegionObject]
     func makeFenceDelegate() -> GeoFenceControllerDelegate
 }
 
 open class WifiListDependencyContainer: WifiListControllerFactory {
 
     private var delegate: GeoFenceControllerDelegate
+    private var regionObjects: [RegionObject] = []
 
-    internal init(delegate: GeoFenceControllerDelegate) {
+    internal init(delegate: GeoFenceControllerDelegate, regionObjects: [RegionObject]) {
         self.delegate = delegate
+        self.regionObjects = regionObjects
     }
 
     func makeViewController() -> WifiListViewController? {
@@ -31,11 +33,11 @@ open class WifiListDependencyContainer: WifiListControllerFactory {
     }
 
     func makeWifiListViewModel() -> WifiListViewModel {
-        WifiListViewModel(makeWifiListDataSource())
+        WifiListViewModel(makeWifiList())
     }
 
-    func makeWifiListDataSource() -> RegionDataSource {
-        RegionDataSource()
+    func makeWifiList() -> [RegionObject] {
+        regionObjects
     }
 
     func makeFenceDelegate() -> GeoFenceControllerDelegate {
@@ -93,8 +95,8 @@ class WifiListViewController: UIViewController {
     }
 
     @IBAction func disconnectTapped(_ sender: Any) {
+        self.delegate?.disconnectWifi()
         self.dismiss(animated: true, completion: {
-            self.delegate?.disconnectWifi()
         })
     }
 
@@ -103,8 +105,8 @@ class WifiListViewController: UIViewController {
     }
 
     func didSelectWifi(_ hotspots: HotSpot) {
+        self.delegate?.wifiConnected(hotspots)
         self.dismiss(animated: true) {
-            self.delegate?.wifiConnected(hotspots)
         }
     }
 }
@@ -132,6 +134,3 @@ extension WifiListViewController: WifiListViewModelDelegate {
         self.tableView.reloadData()
     }
 }
-
-
-

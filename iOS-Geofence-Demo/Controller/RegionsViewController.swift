@@ -84,7 +84,6 @@ class RegionsViewController: UITableViewController {
         viewModel.delegate = self
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            LocationService.sharedInstance.startUpdatingLocation()
             self.mapView.zoomToUserLocation()
         }
         // Do any additional setup after loading the view.
