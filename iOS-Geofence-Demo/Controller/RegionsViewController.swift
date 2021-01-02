@@ -117,6 +117,7 @@ class RegionsViewController: UITableViewController {
         let networkName = self.networkName.text ?? ""
         guard let radiusText = self.radius.text, let radius = Float(radiusText) else { return }
 
+        
         viewModel.getNewRegion(regionName, radius, mapView.centerCoordinate, networkName)
     }
 

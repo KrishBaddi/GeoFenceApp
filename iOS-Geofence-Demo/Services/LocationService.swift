@@ -69,7 +69,6 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         guard let location = locations.last else {
             return
         }
-        // singleton for get last location
         self.lastLocation = location
 
         // use for real time update location

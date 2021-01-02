@@ -265,6 +265,7 @@ class GeoFenceViewController: UIViewController {
         self.add(region)
         self.viewModel.saveRegionData(region)
         self.setVisibleRegion(region)
+        self.wifiButton.isEnabled = true
     }
 
     // Functions that draw radius overlay and add annotation

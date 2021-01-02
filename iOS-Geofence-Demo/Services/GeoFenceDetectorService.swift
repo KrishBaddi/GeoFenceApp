@@ -42,10 +42,14 @@ class GeoFenceDetectorService {
     }
 
     func setCurrentWifi(_ region: RegionObject, _ network: HotSpot?) {
+        // If current fence region is connected to same wifi of region
+        // Just update the wifi connection
         if let currentRegion = currentRegion, let network = network, currentRegion.network.id == network.id {
             self.currentWifi = network
             didChangeWifi()
         } else {
+
+            // Else notify entered into the region and wifi area
             self.currentRegion = region
             self.currentWifi = network
             didChangeWifi()
@@ -54,23 +58,26 @@ class GeoFenceDetectorService {
     }
 
     func exitedRegion() {
+        // When exiting fence region just nullfiy current region
         self.currentRegion = nil
         detectRegionChanges()
     }
 
     func disconnectWifi() {
-        // Check if exited both fence and wifi
+        // Check if exited both fence region and wifi region
         if checkIfExitedRegionAndWifi() {
             tempRegion = nil
             currentWifi = nil
             detectRegionChanges()
             didChangeWifi()
         } else {
+            // Notify wifi changes only if there is wifi connected
             if currentWifi != nil {
                 currentWifi = nil
                 didChangeWifi()
 
-                // If region mo
+                // Notify entry/exit changes only if wifi was connected
+                // but not through fence region
                 if tempRegion == nil {
                     currentRegion = nil
                     detectRegionChanges()
@@ -82,10 +89,13 @@ class GeoFenceDetectorService {
     func detectRegionChanges() {
         
         if currentWifi == nil && currentRegion == nil {
+            // Notify exit when wifi is disconnected and current location is exited region
             self.delegate?.didExitRegion()
         } else if currentRegion?.network == currentWifi {
+            // Notify if current wifi is connected to its own region
             self.delegate?.didEnteredRegion(currentRegion?.title ?? "")
         } else if currentRegion != nil {
+            // Notify if current location entered into region and no wifi connected
             self.delegate?.didEnteredRegion(currentRegion?.title ?? "")
         }
     }

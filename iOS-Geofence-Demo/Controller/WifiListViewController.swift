@@ -61,9 +61,11 @@ class WifiListViewController: UIViewController {
     private var contentView = UIView()
     var addButton: UIBarButtonItem!
 
+    @IBOutlet weak var noWifiEmptyView: UIView!
     @IBOutlet weak var bkgView: UIView!
     @IBOutlet weak var tableView: UITableView!
 
+    @IBOutlet weak var disconnectBtn: UIButton!
     init?(coder: NSCoder, factory: Factory) {
         self.factory = factory
         super.init(coder: coder)
@@ -86,7 +88,7 @@ class WifiListViewController: UIViewController {
         setupView()
     }
 
-    func setupView()  {
+    func setupView() {
         bkgView.layer.cornerRadius = 4
     }
 
@@ -107,6 +109,20 @@ class WifiListViewController: UIViewController {
     func didSelectWifi(_ hotspots: HotSpot) {
         self.delegate?.wifiConnected(hotspots)
         self.dismiss(animated: true) {
+        }
+    }
+
+    func reloadData(_ hotspots: [HotSpot]) {
+        if hotspots.count > 0 {
+            noWifiEmptyView.isHidden = true
+            disconnectBtn.isEnabled = true
+            self.tableView.isHidden = false
+            self.wifiList = hotspots
+            self.tableView.reloadData()
+        } else {
+            self.tableView.isHidden = true
+            noWifiEmptyView.isHidden = false
+            disconnectBtn.isEnabled = false
         }
     }
 }
@@ -130,7 +146,6 @@ extension WifiListViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension WifiListViewController: WifiListViewModelDelegate {
     func getAllHotSpots(_ hotspots: [HotSpot]) {
-        self.wifiList = hotspots
-        self.tableView.reloadData()
+        self.reloadData(hotspots)
     }
 }
