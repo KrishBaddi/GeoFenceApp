@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8D459059259F235200B45411 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D459058259F235200B45411 /* UIView+Extension.swift */; };
-		8D45905E259F2AC800B45411 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D45905D259F2AC800B45411 /* UIColor+Extension.swift */; };
 		8D793D4F259C80C100E742A5 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D4E259C80C100E742A5 /* String+Extension.swift */; };
 		8D793D55259C9C9E00E742A5 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D54259C9C9E00E742A5 /* LocationService.swift */; };
 		8D793D6B259CBAC000E742A5 /* Geotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D793D6A259CBAC000E742A5 /* Geotification.swift */; };
@@ -56,7 +55,6 @@
 
 /* Begin PBXFileReference section */
 		8D459058259F235200B45411 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
-		8D45905D259F2AC800B45411 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		8D793D4E259C80C100E742A5 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		8D793D54259C9C9E00E742A5 /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		8D793D6A259CBAC000E742A5 /* Geotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geotification.swift; sourceTree = "<group>"; };
@@ -238,7 +236,6 @@
 				8D793D88259DD54A00E742A5 /* MKMapView+Extension.swift */,
 				8DF492E7259C55E100AAF3DA /* UIView+AutoLayout.swift */,
 				8D459058259F235200B45411 /* UIView+Extension.swift */,
-				8D45905D259F2AC800B45411 /* UIColor+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -407,7 +404,6 @@
 				8D793D55259C9C9E00E742A5 /* LocationService.swift in Sources */,
 				8D793D93259EBA0A00E742A5 /* RegionsViewModel.swift in Sources */,
 				8DF492DB259C545400AAF3DA /* GeoFenceViewController.swift in Sources */,
-				8D45905E259F2AC800B45411 /* UIColor+Extension.swift in Sources */,
 				8D793D79259D853000E742A5 /* RegionsViewController.swift in Sources */,
 				8DF492F9259C706900AAF3DA /* RegionObject.swift in Sources */,
 				8D793D4F259C80C100E742A5 /* String+Extension.swift in Sources */,
