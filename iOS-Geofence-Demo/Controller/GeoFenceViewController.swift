@@ -119,8 +119,9 @@ class GeoFenceViewController: UIViewController {
 
         mapView.delegate = self
         locationService.delegate = self
+        viewModel.delegate = self
         viewModel.setDetectorDelegate(delegate: self)
-        loadAllRegions()
+        viewModel.loadRegions()
     }
 
     func setUpContentView() {
@@ -210,22 +211,18 @@ class GeoFenceViewController: UIViewController {
 
 
     // MARK: Loading and saving functions
-    func loadAllRegions() {
+    func reloadAllData(_ regions: [RegionObject])  {
+        regions.forEach { self.add($0) }
 
-        self.viewModel.loadRegions({ [weak self] (objects) in
-            guard let self = self else { return }
-            objects.forEach { self.add($0) }
-
-            if let firstRegion = objects.first {
-                self.setVisibleRegion(firstRegion)
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    self.mapView.zoomToUserLocation()
-                }
+        if let firstRegion = regions.first {
+            self.setVisibleRegion(firstRegion)
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.mapView.zoomToUserLocation()
             }
-            self.addToolBarButton()
-            self.updateWifiButton(objects.count > 0)
-        })
+        }
+        self.addToolBarButton()
+        self.updateWifiButton(regions.count > 0)
     }
 
     @objc func locationTapped() {
@@ -274,7 +271,6 @@ class GeoFenceViewController: UIViewController {
 
     func remove(_ annotation: RegionAnnotation) {
         mapView.removeAnnotation(annotation)
-
         if let region = self.viewModel.getAllRegions().first(where: { $0.id == annotation.regionId }) {
             removeRadiusOverlay(forRegion: region)
             viewModel.deleteRegion(region.id)
@@ -282,7 +278,6 @@ class GeoFenceViewController: UIViewController {
             self.updateWifiButton(self.viewModel.getAllRegions().count > 0)
         }
     }
-
 
     func addRadiusOverlay(forRegion region: RegionObject) {
         if let coordinates = region.getCoordinates() {
@@ -372,6 +367,12 @@ class GeoFenceViewController: UIViewController {
         regionStatusLabel.text = status
         regionStatusView.backgroundColor = UIColor.red
         self.regionStatusView.showHideView()
+    }
+}
+
+extension GeoFenceViewController: GeoFenceViewModelDelegate {
+    func reloadData(_ regions: [RegionObject]) {
+        self.reloadAllData(regions)
     }
 }
 

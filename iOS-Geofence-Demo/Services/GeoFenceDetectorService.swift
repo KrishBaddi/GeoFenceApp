@@ -44,6 +44,7 @@ class GeoFenceDetectorService {
     func setCurrentWifi(_ region: RegionObject, _ network: HotSpot?) {
         if let currentRegion = currentRegion, let network = network, currentRegion.network.id == network.id {
             self.currentWifi = network
+            didChangeWifi()
         } else {
             self.currentRegion = region
             self.currentWifi = network

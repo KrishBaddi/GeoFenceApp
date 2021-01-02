@@ -8,11 +8,16 @@
 import Foundation
 import CoreLocation
 
+protocol GeoFenceViewModelDelegate: class {
+    func reloadData(_ regions: [RegionObject])
+}
+
 class GeoFenceViewModel {
 
     private var dataSource: RegionDataSource
     private var fenceDetector: GeoFenceDetectorService
     private var regions: [RegionObject] = []
+    weak var delegate: GeoFenceViewModelDelegate?
 
     internal init(_ dataSource: RegionDataSource, _ fenceDetector: GeoFenceDetectorService) {
         self.dataSource = dataSource
@@ -46,18 +51,17 @@ class GeoFenceViewModel {
         }
     }
 
-    public func loadRegions(_ completion: (([RegionObject]) -> Void)?) {
+    public func loadRegions() {
         dataSource.loadAllRegions { (result) in
             switch result {
             case .success(let results):
                 self.regions = results
-                completion?(results)
+                self.delegate?.reloadData(self.regions)
             case .failure(let error):
                 print(error)
             }
         }
     }
-
 
     public func getAllRegions() -> [RegionObject] {
         self.regions
