@@ -10,6 +10,15 @@ import Foundation
 enum DefaultsError: Error {
     case noDataFound
     case saveError
+
+    var message: String {
+        switch self {
+        case .noDataFound:
+            return "No data found"
+        case .saveError:
+            return "Error while saving data"
+        }
+    }
 }
 
 protocol RegionDataSourceProtocol {

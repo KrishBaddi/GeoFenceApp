@@ -48,9 +48,6 @@ open class WifiListDependencyContainer: WifiListControllerFactory {
 class WifiListViewController: UIViewController {
 
     // MARK: - Dependency Injection
-
-    // Here we use protocol composition to create a Factory type that includes
-    // all the factory protocols that this view controller needs.
     typealias Factory = WifiListControllerFactory
     private let factory: Factory
 
@@ -66,6 +63,7 @@ class WifiListViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     @IBOutlet weak var disconnectBtn: UIButton!
+    
     init?(coder: NSCoder, factory: Factory) {
         self.factory = factory
         super.init(coder: coder)

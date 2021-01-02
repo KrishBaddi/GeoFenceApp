@@ -57,11 +57,11 @@ class GeoFenceViewController: UIViewController {
     lazy var locationService = factory.makeLocationService()
     private let factory: Factory
     private var contentView = UIView()
-    //var regionObjects: [RegionObject] = []
 
     private var wifiButton: UIBarButtonItem!
     private var statusButton: ToolBarTitleItem!
 
+    // MARK: Lazy load UI properties
     lazy var mapView: MKMapView = {
         let view = MKMapView()
         view.isZoomEnabled = true
@@ -105,14 +105,8 @@ class GeoFenceViewController: UIViewController {
         print("Deallocated...")
     }
 
-    override func loadView() {
-        super.loadView()
-
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         setUpContentView()
         setupNavigationButtons()
@@ -179,11 +173,11 @@ class GeoFenceViewController: UIViewController {
 
         regionStatusView.addSubview(regionStatusLabel)
         regionStatusLabel.text = "saasdfashfasdfjasdfb"
-        let constraints1: [NSLayoutConstraint] = [
+        let labelConstraint: [NSLayoutConstraint] = [
             regionStatusLabel.centerYAnchor.constraint(equalTo: regionStatusView.centerYAnchor),
             regionStatusLabel.centerXAnchor.constraint(equalTo: regionStatusView.centerXAnchor),
         ]
-        NSLayoutConstraint.activate(constraints1)
+        NSLayoutConstraint.activate(labelConstraint)
 
         regionStatusView.isHidden = true
     }
@@ -339,6 +333,7 @@ class GeoFenceViewController: UIViewController {
         }
     }
 
+    // Function to stop monitoring region object
     func stopMonitoring(_ region: RegionObject) {
         let regions = locationService.locationManager.monitoredRegions
         regions.forEach({ (fenceRegion) in

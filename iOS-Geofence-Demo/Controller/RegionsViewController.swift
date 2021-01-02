@@ -48,8 +48,6 @@ class RegionsViewController: UITableViewController {
 
     // MARK: - Dependency Injection
 
-    // Here we use protocol composition to create a Factory type that includes
-    // all the factory protocols that this view controller needs.
     typealias Factory = RegionsControllerFactory
     private let factory: Factory
 
@@ -89,6 +87,7 @@ class RegionsViewController: UITableViewController {
         // Do any additional setup after loading the view.
     }
 
+    // Setup navigation buttons items
     func setupNavigationButtons() {
         navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "xmark"), style: .plain, target: self, action: #selector(self.closeTapped))
 
@@ -100,6 +99,7 @@ class RegionsViewController: UITableViewController {
         navigationItem.rightBarButtonItems = [addButton, location]
     }
 
+    // Validate textfield on text change
     @IBAction func textFieldEditingChanged(sender: UITextField) {
         viewModel.validator(self.regionName.text, self.radius.text, self.networkName.text)
     }
@@ -116,8 +116,6 @@ class RegionsViewController: UITableViewController {
         let regionName = self.regionName.text ?? ""
         let networkName = self.networkName.text ?? ""
         guard let radiusText = self.radius.text, let radius = Float(radiusText) else { return }
-
-        
         viewModel.getNewRegion(regionName, radius, mapView.centerCoordinate, networkName)
     }
 
