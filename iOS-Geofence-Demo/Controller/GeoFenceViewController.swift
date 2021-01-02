@@ -155,7 +155,6 @@ class GeoFenceViewController: UIViewController {
         toolBar.items = []
         toolBar.items?.append(wifiButton)
         toolBar.items?.append(statusButton)
-        self.updateWifiButton(self.viewModel.getAllRegions().count > 0)
     }
 
     func updateWifiButton(_ isEnabled: Bool) {
@@ -239,7 +238,11 @@ class GeoFenceViewController: UIViewController {
     }
 
     @objc func connectWifiTapped() {
-        let container = WifiListDependencyContainer(delegate: self, regionObjects: viewModel.getAllRegions())
+        viewModel.getNetworkList()
+    }
+
+    func navigateToWifiListVC(_ hotspots: [HotSpot]) {
+        let container = WifiListDependencyContainer(delegate: self, hotspots: hotspots)
         if let viewController = container.makeViewController() {
             viewController.modalPresentationStyle = .overFullScreen
             self.present(viewController, animated: true, completion: {
@@ -251,7 +254,6 @@ class GeoFenceViewController: UIViewController {
         self.add(region)
         self.viewModel.saveRegionData(region)
         self.setVisibleRegion(region)
-        self.updateWifiButton(self.viewModel.getAllRegions().count > 0)
     }
 
     // MARK: Functions that update the model/associated views with geotification changes
@@ -271,12 +273,7 @@ class GeoFenceViewController: UIViewController {
 
     func remove(_ annotation: RegionAnnotation) {
         mapView.removeAnnotation(annotation)
-        if let region = self.viewModel.getAllRegions().first(where: { $0.id == annotation.regionId }) {
-            removeRadiusOverlay(forRegion: region)
-            viewModel.deleteRegion(region.id)
-            self.stopMonitoring(region)
-            self.updateWifiButton(self.viewModel.getAllRegions().count > 0)
-        }
+        viewModel.deleteRegion(annotation)
     }
 
     func addRadiusOverlay(forRegion region: RegionObject) {
@@ -371,6 +368,19 @@ class GeoFenceViewController: UIViewController {
 }
 
 extension GeoFenceViewController: GeoFenceViewModelDelegate {
+    func stopMonitoringRegion(_ region: RegionObject) {
+        removeRadiusOverlay(forRegion: region)
+        stopMonitoring(region)
+    }
+
+    func showError(_ error: String) {
+
+    }
+
+    func getNetworkList(_ hotspots: [HotSpot]) {
+        navigateToWifiListVC(hotspots)
+    }
+
     func reloadData(_ regions: [RegionObject]) {
         self.reloadAllData(regions)
     }

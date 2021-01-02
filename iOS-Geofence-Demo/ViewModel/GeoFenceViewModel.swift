@@ -10,6 +10,9 @@ import CoreLocation
 
 protocol GeoFenceViewModelDelegate: class {
     func reloadData(_ regions: [RegionObject])
+    func getNetworkList(_ hotspots: [HotSpot])
+    func stopMonitoringRegion(_ region: RegionObject)
+    func showError(_ error: String)
 }
 
 class GeoFenceViewModel {
@@ -35,7 +38,7 @@ class GeoFenceViewModel {
             case .success(let _):
                 break
             case .failure(let error):
-                print(error)
+                self.delegate?.showError(error.localizedDescription)
             }
         }
     }
@@ -46,7 +49,7 @@ class GeoFenceViewModel {
             case .success(let _):
                 break
             case .failure(let error):
-                print(error)
+                self.delegate?.showError(error.localizedDescription)
             }
         }
     }
@@ -58,7 +61,7 @@ class GeoFenceViewModel {
                 self.regions = results
                 self.delegate?.reloadData(self.regions)
             case .failure(let error):
-                print(error)
+                self.delegate?.showError(error.localizedDescription)
             }
         }
     }
@@ -67,8 +70,14 @@ class GeoFenceViewModel {
         self.regions
     }
 
-    public func deleteRegion(_ id: String) {
-        if let index = self.regions.firstIndex(where: { $0.id == id }) {
+    public func getNetworkList() {
+        let hotspots = regions.map(\.network)
+        self.delegate?.getNetworkList(hotspots)
+    }
+
+    public func deleteRegion(_ annotation: RegionAnnotation) {
+        if let index = self.regions.firstIndex(where: { $0.id == annotation.regionId }) {
+            self.delegate?.stopMonitoringRegion(self.regions[index])
             self.regions.remove(at: index)
             self.saveAllRegion()
         }

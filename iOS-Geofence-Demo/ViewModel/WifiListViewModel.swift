@@ -12,17 +12,15 @@ protocol WifiListViewModelDelegate: class {
 }
 
 class WifiListViewModel {
-    private var regions: [RegionObject] = []
     weak var delegate: WifiListViewModelDelegate?
 
     private var hotspots: [HotSpot] = []
 
-    internal init(_ regions: [RegionObject]) {
-        self.regions = regions
+    internal init(_ hotspots: [HotSpot]) {
+        self.hotspots = hotspots
     }
 
     func getAllHotSpots() {
-        self.hotspots = regions.map(\.network)
         self.delegate?.getAllHotSpots(self.hotspots)
     }
 }

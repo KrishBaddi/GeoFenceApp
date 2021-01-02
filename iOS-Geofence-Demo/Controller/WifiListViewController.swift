@@ -11,18 +11,18 @@ import UIKit
 protocol WifiListControllerFactory {
     func makeViewController() -> WifiListViewController?
     func makeWifiListViewModel() -> WifiListViewModel
-    func makeWifiList() -> [RegionObject]
+    func makeWifiList() -> [HotSpot]
     func makeFenceDelegate() -> GeoFenceControllerDelegate
 }
 
 open class WifiListDependencyContainer: WifiListControllerFactory {
 
     private var delegate: GeoFenceControllerDelegate
-    private var regionObjects: [RegionObject] = []
+    private var hotspots: [HotSpot] = []
 
-    internal init(delegate: GeoFenceControllerDelegate, regionObjects: [RegionObject]) {
+    internal init(delegate: GeoFenceControllerDelegate, hotspots: [HotSpot]) {
         self.delegate = delegate
-        self.regionObjects = regionObjects
+        self.hotspots = hotspots
     }
 
     func makeViewController() -> WifiListViewController? {
@@ -36,8 +36,8 @@ open class WifiListDependencyContainer: WifiListControllerFactory {
         WifiListViewModel(makeWifiList())
     }
 
-    func makeWifiList() -> [RegionObject] {
-        regionObjects
+    func makeWifiList() -> [HotSpot] {
+        hotspots
     }
 
     func makeFenceDelegate() -> GeoFenceControllerDelegate {
