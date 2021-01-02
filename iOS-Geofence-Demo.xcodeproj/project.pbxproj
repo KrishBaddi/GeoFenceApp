@@ -247,16 +247,8 @@
 			isa = PBXGroup;
 			children = (
 				8DF492FF259C776F00AAF3DA /* Local */,
-				8DF492FE259C776900AAF3DA /* Remote */,
 			);
 			path = DataSource;
-			sourceTree = "<group>";
-		};
-		8DF492FE259C776900AAF3DA /* Remote */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Remote;
 			sourceTree = "<group>";
 		};
 		8DF492FF259C776F00AAF3DA /* Local */ = {

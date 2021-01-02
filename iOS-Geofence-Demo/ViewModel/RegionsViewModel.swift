@@ -36,6 +36,7 @@ class RegionsViewModel {
         delegate?.getNewRegion(regionObject)
     }
 
+    // TextField Validator
     func validator(_ regionName: String?, _ radiusText: String?,_ network: String?)  {
         guard let regionName = regionName, regionName.count > 0 else {
                 delegate?.isFieldsValidated(false)

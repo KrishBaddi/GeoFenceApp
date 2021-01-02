@@ -35,7 +35,7 @@ class GeoFenceViewModel {
         self.regions.append(region)
         dataSource.saveAllRegions(regions) { (results) in
             switch results {
-            case .success(let _):
+            case .success:
                 break
             case .failure(let error):
                 self.delegate?.showError(error.localizedDescription)
@@ -46,7 +46,7 @@ class GeoFenceViewModel {
     public func saveAllRegion() {
         dataSource.saveAllRegions(regions) { (results) in
             switch results {
-            case .success(let _):
+            case .success:
                 break
             case .failure(let error):
                 self.delegate?.showError(error.localizedDescription)

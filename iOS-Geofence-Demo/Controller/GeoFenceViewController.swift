@@ -124,6 +124,7 @@ class GeoFenceViewController: UIViewController {
         viewModel.loadRegions()
     }
 
+    // MARK: Setup layout for content view and other subviews
     func setUpContentView() {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(contentView)
@@ -138,27 +139,6 @@ class GeoFenceViewController: UIViewController {
         setUpToolBarView()
         addToolBarButton()
         addRegionStatusView()
-    }
-
-    func setupNavigationButtons() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "location"), style: .plain, target: self, action: #selector(self.locationTapped))
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "plus"), style: .plain, target: self, action: #selector(self.addRegionTapped))
-    }
-
-    func addToolBarButton() {
-        wifiButton = UIBarButtonItem(image: UIImage(systemName: "wifi"), style: .plain, target: self, action: #selector(connectWifiTapped))
-        toolBar.items = [wifiButton]
-
-        statusButton = ToolBarTitleItem(text: "", font: .systemFont(ofSize: 15), color: UIColor.darkGray)
-
-        toolBar.items = []
-        toolBar.items?.append(wifiButton)
-        toolBar.items?.append(statusButton)
-    }
-
-    func updateWifiButton(_ isEnabled: Bool) {
-        self.wifiButton.isEnabled = isEnabled
     }
 
     func setUpMapView() {
@@ -208,21 +188,36 @@ class GeoFenceViewController: UIViewController {
         regionStatusView.isHidden = true
     }
 
+    // Setup navigation items
+    func setupNavigationButtons() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "location"), style: .plain, target: self, action: #selector(self.locationTapped))
 
-    // MARK: Loading and saving functions
-    func reloadAllData(_ regions: [RegionObject])  {
-        regions.forEach { self.add($0) }
-
-        if let firstRegion = regions.first {
-            self.setVisibleRegion(firstRegion)
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                self.mapView.zoomToUserLocation()
-            }
-        }
-        self.addToolBarButton()
-        self.updateWifiButton(regions.count > 0)
+        navigationItem.rightBarButtonItem = UIBarButtonItem.init(image: UIImage.init(systemName: "plus"), style: .plain, target: self, action: #selector(self.addRegionTapped))
     }
+
+    // Function to update title with connect wifi network
+    func updateNavigationTitle(isConnected: Bool, name: String? = nil) {
+        let titleText = "Wifi: \(String(describing: name ?? ""))"
+        self.title = isConnected ? titleText : ""
+    }
+
+    // Setup toolbar items
+    func addToolBarButton() {
+        wifiButton = UIBarButtonItem(image: UIImage(systemName: "wifi"), style: .plain, target: self, action: #selector(connectWifiTapped))
+        toolBar.items = [wifiButton]
+
+        statusButton = ToolBarTitleItem(text: "", font: .systemFont(ofSize: 15), color: UIColor.darkGray)
+
+        toolBar.items = []
+        toolBar.items?.append(wifiButton)
+        toolBar.items?.append(statusButton)
+    }
+
+    func updateWifiButton(_ isEnabled: Bool) {
+        self.wifiButton.isEnabled = isEnabled
+    }
+
+    // MARK: BarButton functions
 
     @objc func locationTapped() {
         mapView.zoomToUserLocation()
@@ -250,13 +245,29 @@ class GeoFenceViewController: UIViewController {
         }
     }
 
+    // MARK: Load all regions from defaults and draw on maps
+    func reloadRegions(_ regions: [RegionObject]) {
+        regions.forEach { self.add($0) }
+
+        if let firstRegion = regions.first {
+            self.setVisibleRegion(firstRegion)
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                self.mapView.zoomToUserLocation()
+            }
+        }
+        self.addToolBarButton()
+        self.updateWifiButton(regions.count > 0)
+    }
+
+    // Function to add new region
     func addNewRegion(_ region: RegionObject) {
         self.add(region)
         self.viewModel.saveRegionData(region)
         self.setVisibleRegion(region)
     }
 
-    // MARK: Functions that update the model/associated views with geotification changes
+    // Functions that draw radius overlay and add annotation
     func add(_ region: RegionObject) {
         if let annotation = region.annotableRegion() {
             mapView.addAnnotation(annotation)
@@ -265,17 +276,20 @@ class GeoFenceViewController: UIViewController {
         self.startMonitoring(region)
     }
 
-    func setVisibleRegion(_ region: RegionObject) {
-        // center the mapView on the selected pin
-        let region = MKCoordinateRegion(center: region.getCoordinates()!, latitudinalMeters: 5000, longitudinalMeters: 5000)
-        mapView.setRegion(region, animated: true)
-    }
-
+    // Functions to delete region and annotation
     func remove(_ annotation: RegionAnnotation) {
         mapView.removeAnnotation(annotation)
         viewModel.deleteRegion(annotation)
     }
 
+    // Center the mapView on the selected pin
+    func setVisibleRegion(_ region: RegionObject) {
+        let region = MKCoordinateRegion(center: region.getCoordinates()!, latitudinalMeters: 5000, longitudinalMeters: 5000)
+        mapView.setRegion(region, animated: true)
+    }
+
+
+    // Function to add radius overlay on map
     func addRadiusOverlay(forRegion region: RegionObject) {
         if let coordinates = region.getCoordinates() {
             mapView.addOverlay(MKCircle.init(center: coordinates, radius: CLLocationDistance(region.radius)))
@@ -289,8 +303,8 @@ class GeoFenceViewController: UIViewController {
         return region
     }
 
+    // Find exactly one overlay which has the same coordinates & radius to remove
     func removeRadiusOverlay(forRegion region: RegionObject) {
-        // Find exactly one overlay which has the same coordinates & radius to remove
         let overlays = mapView.overlays
         for overlay in overlays {
             guard let circleOverlay = overlay as? MKCircle else { continue }
@@ -304,6 +318,7 @@ class GeoFenceViewController: UIViewController {
         }
     }
 
+    // Function to monitor location
     func startMonitoring(_ region: RegionObject) {
         if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             showAlert(withTitle: "Error", message: "Geofencing is not supported on this device!")
@@ -312,8 +327,8 @@ class GeoFenceViewController: UIViewController {
 
         if !locationService.locationManager.hasLocationPermission() {
             let message = """
-        Your geotification is saved but will only be activated once you grant
-        Geotify permission to access the device location.
+        Your geo fence location is saved but will only be activated once you grant
+        permission to access the device location.
         """
             showAlert(withTitle: "Warning", message: message)
         }
@@ -332,6 +347,7 @@ class GeoFenceViewController: UIViewController {
         })
     }
 
+    // Function to create circular region to monitor the exit and entry
     func circularRegion(with region: RegionObject) -> CLCircularRegion? {
         guard let coordinates = region.getCoordinates() else { return nil }
         let region = CLCircularRegion(center: coordinates, radius: CLLocationDistance(region.radius), identifier: region.id)
@@ -340,16 +356,10 @@ class GeoFenceViewController: UIViewController {
         return region
     }
 
-    func updateWifiStatus(isConnected: Bool, name: String? = nil) {
-        let titleText = "Wifi: \(String(describing: name ?? ""))"
-        self.title = isConnected ? titleText : ""
-    }
-
+    // Function to show/hide notification based on entry/exit
     func isShowRegionNotification(status: Bool, _ regionName: String?) {
-
-        let text = status ? "Entered into '\(regionName ?? "")'" : "Exited from the region"
+        let text = status ? "Entered into '\(regionName ?? "")' region" : "Exited from the region"
         regionStatusLabel.text = text
-
         if status {
             regionStatusView.backgroundColor = UIColor.red
             self.regionStatusView.showHideView()
@@ -358,15 +368,10 @@ class GeoFenceViewController: UIViewController {
             self.regionStatusView.showHideView()
         }
     }
-
-    func isShowWifiNotification(_ isConnected: Bool, _ networkName: String?) {
-        let status = isConnected ? "Wifi: connnected to '\(networkName ?? "")'" : "Wifi disconnected"
-        regionStatusLabel.text = status
-        regionStatusView.backgroundColor = UIColor.red
-        self.regionStatusView.showHideView()
-    }
 }
 
+
+// MARK: GeoFenceViewModel Delegate
 extension GeoFenceViewController: GeoFenceViewModelDelegate {
     func stopMonitoringRegion(_ region: RegionObject) {
         removeRadiusOverlay(forRegion: region)
@@ -374,7 +379,7 @@ extension GeoFenceViewController: GeoFenceViewModelDelegate {
     }
 
     func showError(_ error: String) {
-
+        showAlert(withTitle: "Error", message: error)
     }
 
     func getNetworkList(_ hotspots: [HotSpot]) {
@@ -382,10 +387,11 @@ extension GeoFenceViewController: GeoFenceViewModelDelegate {
     }
 
     func reloadData(_ regions: [RegionObject]) {
-        self.reloadAllData(regions)
+        self.reloadRegions(regions)
     }
 }
 
+// MARK: GeoFenceViewController Delegate
 extension GeoFenceViewController: GeoFenceControllerDelegate {
     func disconnectWifi() {
         viewModel.disconnectWifi()
@@ -400,6 +406,7 @@ extension GeoFenceViewController: GeoFenceControllerDelegate {
     }
 }
 
+// MARK: Location Service Delegate
 extension GeoFenceViewController: LocationServiceDelegate {
     func didEnterIntoRegion(region: CLRegion) {
         viewModel.didEnterRegion(region)
@@ -409,24 +416,19 @@ extension GeoFenceViewController: LocationServiceDelegate {
         viewModel.didExitRegion(region)
     }
 
-    func tracingLocation(currentLocation: CLLocation) {
-    }
-
-    func tracingLocationDidFailWithError(error: NSError) {
-    }
-
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         mapView.showsUserLocation = status == .authorizedAlways
     }
 }
 
+// MARK: GeoFence Detector Delegate
 extension GeoFenceViewController: GeoFenceDetectorServiceDelegate {
     func connectedToWifi(_ networkName: String) {
-        updateWifiStatus(isConnected: true, name: networkName)
+        updateNavigationTitle(isConnected: true, name: networkName)
     }
 
     func wifiDisconnected() {
-        updateWifiStatus(isConnected: false)
+        updateNavigationTitle(isConnected: false)
     }
 
     func didEnteredRegion(_ name: String) {
@@ -438,10 +440,12 @@ extension GeoFenceViewController: GeoFenceDetectorServiceDelegate {
     }
 }
 
+// MARK: MKMapView  Delegate
 extension GeoFenceViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView,
         rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
 
+        // Customize circle fencing
         if let circleOverlay = overlay as? MKCircle {
             let circleRenderer = MKCircleRenderer(overlay: circleOverlay)
             circleRenderer.fillColor = .red
@@ -455,6 +459,7 @@ extension GeoFenceViewController: MKMapViewDelegate {
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let identifier = "myGeoFence"
+        // Customize annotation
         if annotation is RegionAnnotation {
             var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
             if annotationView == nil {

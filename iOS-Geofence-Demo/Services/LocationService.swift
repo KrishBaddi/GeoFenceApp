@@ -9,10 +9,14 @@ import Foundation
 import CoreLocation
 
 protocol LocationServiceDelegate: class {
-    func tracingLocation(currentLocation: CLLocation)
-    func tracingLocationDidFailWithError(error: NSError)
+
+    /// Triggered when current location is entered into region
     func didEnterIntoRegion(region: CLRegion)
+
+    /// Triggered when current location is exit the region
     func didExitIntoRegion(region: CLRegion)
+
+    /// Triggered during location authorisation changes occur
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus)
 }
 
@@ -26,9 +30,6 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     override init() {
         self.locationManager = CLLocationManager()
         super.init()
-//
-//        locationManager.desiredAccuracy = kCLLocationAccuracyBest // The accuracy of the location data
-//        locationManager.distanceFilter = 100 // The minimum distance (measured in meters) a device must move horizontally before an update event is generated.
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
@@ -75,11 +76,6 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         updateLocation(currentLocation: location)
     }
 
-    private func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
-        // do on error
-        updateLocationDidFailWithError(error: error)
-    }
-
     public func startMonitoringFor(region: CLRegion) {
         self.locationManager.startMonitoring(for: region)
     }
@@ -89,11 +85,7 @@ class LocationService: NSObject, CLLocationManagerDelegate {
     }
 
     private func updateLocation(currentLocation: CLLocation) {
-        delegate?.tracingLocation(currentLocation: currentLocation)
-    }
-
-    private func updateLocationDidFailWithError(error: NSError) {
-        delegate?.tracingLocationDidFailWithError(error: error)
+        // Implement to listen live location
     }
 
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
@@ -106,6 +98,7 @@ class LocationService: NSObject, CLLocationManagerDelegate {
 }
 
 extension CLLocationManager {
+    // Check if location access granted
     func hasLocationPermission() -> Bool {
         if self.authorizationStatus != .authorizedWhenInUse && self.authorizationStatus != .authorizedAlways {
             return false
