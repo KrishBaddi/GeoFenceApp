@@ -10,20 +10,21 @@ import CoreLocation
 
 protocol GeoFenceViewModelDelegate: class {
     func reloadData(_ regions: [RegionObject])
-    func getNetworkList(_ hotspots: [HotSpot])
+    func networkListLoaded(_ hotspots: [HotSpot])
     func stopMonitoringRegion(_ region: RegionObject)
     func showError(_ error: String)
+    func savedResult(_ status: Bool)
 }
 
 class GeoFenceViewModel {
 
-    private var dataSource: RegionDataSource
+    private var dataSource: RegionDataSourceProtocol
     private var fenceDetector: GeoFenceDetectorService
     private var regions: [RegionObject] = []
     weak var delegate: GeoFenceViewModelDelegate?
 
     // Injecting datasource and fence detector service
-    internal init(_ dataSource: RegionDataSource, _ fenceDetector: GeoFenceDetectorService) {
+    internal init(_ dataSource: RegionDataSourceProtocol, _ fenceDetector: GeoFenceDetectorService) {
         self.dataSource = dataSource
         self.fenceDetector = fenceDetector
     }
@@ -34,9 +35,9 @@ class GeoFenceViewModel {
     }
 
     // function to access network list
-    public func getNetworkList() {
+    public func loadNetworkList() {
         let hotspots = regions.map(\.network)
-        self.delegate?.getNetworkList(hotspots)
+        self.delegate?.networkListLoaded(hotspots)
     }
 
     // function to delete region based on annotation object
@@ -77,8 +78,8 @@ class GeoFenceViewModel {
         self.regions.append(region)
         dataSource.saveAllRegions(regions) { (results) in
             switch results {
-            case .success:
-                break
+            case .success(let status):
+                self.delegate?.savedResult(status)
             case .failure(let error):
                 self.delegate?.showError(error.message)
             }
@@ -89,8 +90,8 @@ class GeoFenceViewModel {
     public func saveAllRegion() {
         dataSource.saveAllRegions(regions) { (results) in
             switch results {
-            case .success:
-                break
+            case .success(let status):
+                self.delegate?.savedResult(status)
             case .failure(let error):
                 self.delegate?.showError(error.message)
             }

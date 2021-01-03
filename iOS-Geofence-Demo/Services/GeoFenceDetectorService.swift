@@ -9,7 +9,7 @@ import Foundation
 
 protocol GeoFenceDetectorServiceDelegate: class {
     func didEnteredRegion(_ name: String)
-    func didExitRegion()
+    func didExitRegion(_ name: String)
     func connectedToWifi(_ networkName: String)
     func wifiDisconnected()
 }
@@ -32,13 +32,20 @@ class GeoFenceDetectorService {
 
     private var currentRegion: RegionObject?
 
-    private var tempRegion: RegionObject?
+    private var tempRegion: RegionObject? {
+        didSet {
+
+        }
+    }
 
 
     func setCurrentRegion(_ region: RegionObject) {
-        self.currentRegion = region
-        self.tempRegion = region
-        detectRegionChanges()
+        if currentWifi == nil {
+            let name = region.title
+            self.currentRegion = region
+            self.tempRegion = region
+            detectRegionChanges(name)
+        }
     }
 
     func setCurrentWifi(_ region: RegionObject, _ network: HotSpot?) {
@@ -51,24 +58,28 @@ class GeoFenceDetectorService {
 
             // Else notify entered into the region and wifi area
             self.currentRegion = region
+            self.tempRegion = region
             self.currentWifi = network
             didChangeWifi()
-            detectRegionChanges()
+            let name = currentRegion?.title ?? ""
+            detectRegionChanges(name)
         }
     }
 
     func exitedRegion() {
         // When exiting fence region just nullfiy current region
+        let name = currentRegion?.title ?? ""
         self.currentRegion = nil
-        detectRegionChanges()
+        detectRegionChanges(name)
     }
 
     func disconnectWifi() {
         // Check if exited both fence region and wifi region
         if checkIfExitedRegionAndWifi() {
+            let name = tempRegion?.title ?? ""
             tempRegion = nil
             currentWifi = nil
-            detectRegionChanges()
+            detectRegionChanges(name)
             didChangeWifi()
         } else {
             // Notify wifi changes only if there is wifi connected
@@ -79,24 +90,25 @@ class GeoFenceDetectorService {
                 // Notify entry/exit changes only if wifi was connected
                 // but not through fence region
                 if tempRegion == nil {
+                    let name = currentRegion?.title ?? ""
                     currentRegion = nil
-                    detectRegionChanges()
+                    detectRegionChanges(name)
                 }
             }
         }
     }
 
-    func detectRegionChanges() {
-        
+    func detectRegionChanges(_ regionName: String) {
+
         if currentWifi == nil && currentRegion == nil {
             // Notify exit when wifi is disconnected and current location is exited region
-            self.delegate?.didExitRegion()
+            self.delegate?.didExitRegion(regionName)
         } else if currentRegion?.network == currentWifi {
             // Notify if current wifi is connected to its own region
-            self.delegate?.didEnteredRegion(currentRegion?.title ?? "")
+            self.delegate?.didEnteredRegion(regionName)
         } else if currentRegion != nil {
             // Notify if current location entered into region and no wifi connected
-            self.delegate?.didEnteredRegion(currentRegion?.title ?? "")
+            self.delegate?.didEnteredRegion("\(regionName)")
         }
     }
 

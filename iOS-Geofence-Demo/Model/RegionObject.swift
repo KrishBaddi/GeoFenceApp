@@ -11,7 +11,7 @@ import MapKit
 
 struct RegionObject: Codable {
     var id: String
-    var title: String?
+    var title: String
     var radius: Float
     var coordinates: Coordinates
     var network: HotSpot

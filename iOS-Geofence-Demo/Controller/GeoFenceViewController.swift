@@ -76,7 +76,7 @@ class GeoFenceViewController: UIViewController {
     lazy var regionStatusView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .red
+        view.backgroundColor = UIColor.red.withAlphaComponent(0.7)
         return view
     }()
 
@@ -84,6 +84,7 @@ class GeoFenceViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
+        label.text = "Geo fence detection..."
         return label
     }()
 
@@ -163,23 +164,22 @@ class GeoFenceViewController: UIViewController {
     func addRegionStatusView() {
         contentView.addSubview(regionStatusView)
         let constraints: [NSLayoutConstraint] = [
-            regionStatusView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            regionStatusView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            regionStatusView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: -40),
+            regionStatusView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            regionStatusView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            regionStatusView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             regionStatusView.heightAnchor.constraint(equalToConstant: 50)
         ]
         NSLayoutConstraint.activate(constraints)
         regionStatusView.layer.cornerRadius = 25
 
         regionStatusView.addSubview(regionStatusLabel)
-        regionStatusLabel.text = "saasdfashfasdfjasdfb"
         let labelConstraint: [NSLayoutConstraint] = [
             regionStatusLabel.centerYAnchor.constraint(equalTo: regionStatusView.centerYAnchor),
             regionStatusLabel.centerXAnchor.constraint(equalTo: regionStatusView.centerXAnchor),
         ]
         NSLayoutConstraint.activate(labelConstraint)
 
-        regionStatusView.isHidden = true
+        regionStatusView.isHidden = false
     }
 
     // Setup navigation items
@@ -227,7 +227,7 @@ class GeoFenceViewController: UIViewController {
     }
 
     @objc func connectWifiTapped() {
-        viewModel.getNetworkList()
+        viewModel.loadNetworkList()
     }
 
     func navigateToWifiListVC(_ hotspots: [HotSpot]) {
@@ -354,15 +354,9 @@ class GeoFenceViewController: UIViewController {
 
     // Function to show/hide notification based on entry/exit
     func isShowRegionNotification(status: Bool, _ regionName: String?) {
-        let text = status ? "Entered into '\(regionName ?? "")' region" : "Exited from the region"
+        let text = status ? "Entered into '\(regionName ?? "")' region" : "Exited from the region '\(regionName ?? "")'"
         regionStatusLabel.text = text
-        if status {
-            regionStatusView.backgroundColor = UIColor.red
-            self.regionStatusView.showHideView()
-        } else {
-            regionStatusView.backgroundColor = UIColor.red
-            self.regionStatusView.showHideView()
-        }
+        regionStatusLabel.font = UIFont.systemFont(ofSize: 14)
     }
 }
 
@@ -378,12 +372,16 @@ extension GeoFenceViewController: GeoFenceViewModelDelegate {
         showAlert(withTitle: "Error", message: error)
     }
 
-    func getNetworkList(_ hotspots: [HotSpot]) {
+    func networkListLoaded(_ hotspots: [HotSpot]) {
         navigateToWifiListVC(hotspots)
     }
 
     func reloadData(_ regions: [RegionObject]) {
         self.reloadRegions(regions)
+    }
+
+    func savedResult(_ status: Bool) {
+        print(status)
     }
 }
 
@@ -431,8 +429,8 @@ extension GeoFenceViewController: GeoFenceDetectorServiceDelegate {
         isShowRegionNotification(status: true, name)
     }
 
-    func didExitRegion() {
-        isShowRegionNotification(status: false, nil)
+    func didExitRegion(_ name: String) {
+        isShowRegionNotification(status: false, name)
     }
 }
 
