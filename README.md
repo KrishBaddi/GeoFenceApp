@@ -25,7 +25,9 @@ alt="IMAGE ALT TEXT HERE" width="1000" height="800" border="10" />
 <h2>Setup</h2>
 
 <ul>
- <li> For app flow please follow the above dropbox video  </li>
+ <li> For app flow please follow the link of dropbox video attached below for demonstration purpose. </li>
+<li> Entry and Exit flow (No Wifi connected) <a href="https://github.com/KrishBaddi/GeoFenceApp/blob/main/Geo%20Fence%20Images/Entry:Exit(No%20Wifi).mov">link</a></li>
+<li> Entry and Exit flow (Wifi connected) <a href="https://github.com/KrishBaddi/GeoFenceApp/blob/main/Geo%20Fence%20Images/Entry:Exit(With%20Wifi).mov">link</a></li>
   
  <li style="color:red;">To connect Wifi, click on wifi icon, bottom sheet with wifi list appears and select any wifi to connect </li>
 
