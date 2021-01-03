@@ -1,4 +1,4 @@
-<h2> Geo fence iOS App using Swift 5 and MVVC Architecture </h2>
+<h2> Geo fence iOS App using Swift 5 and MVVM Architecture </h2>
 <h6> This app designed to detect circle regions based on updating location. Below dropbox video shows the flow of using this app. </h6>
 </br>
 
