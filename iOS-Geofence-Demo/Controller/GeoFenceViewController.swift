@@ -403,11 +403,11 @@ extension GeoFenceViewController: GeoFenceControllerDelegate {
 // MARK: Location Service Delegate
 extension GeoFenceViewController: LocationServiceDelegate {
     func didEnterIntoRegion(region: CLRegion) {
-        viewModel.didEnterRegion(region)
+        viewModel.didEnterRegion(region.identifier)
     }
 
     func didExitIntoRegion(region: CLRegion) {
-        viewModel.didExitRegion(region)
+        viewModel.didExitRegion(region.identifier)
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

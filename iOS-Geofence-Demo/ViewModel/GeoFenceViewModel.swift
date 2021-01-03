@@ -62,14 +62,14 @@ class GeoFenceViewModel {
     }
 
     // function to tell about region entry for fence detector service
-    func didEnterRegion(_ region: CLRegion) {
-        if let regionObject = self.regions.first(where: { $0.id == region.identifier }) {
+    func didEnterRegion(_ identifier: String) {
+        if let regionObject = self.regions.first(where: { $0.id == identifier }) {
             fenceDetector.setCurrentRegion(regionObject)
         }
     }
 
     // function to tell about region exit for fence detector service
-    func didExitRegion(_ region: CLRegion) {
+    func didExitRegion(_ identifier: String) {
         fenceDetector.exitedRegion()
     }
 

@@ -10,19 +10,6 @@ import XCTest
 
 class GeoFenceViewModelTests: XCTestCase {
 
-    var expectation: XCTestExpectation?
-    var regions: [RegionObject]?
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-
-
     func testLoadRegions() {
 
         // Setup our objects
@@ -105,12 +92,15 @@ class GeoFenceViewModelTests: XCTestCase {
         XCTAssertEqual(result?.count, 3)
     }
 
-    func testConnectWifi() {
+    func testConnectWifiAndRegion() {
         // Setup our objects
         let datasource = MockRegionDataSource()
         let mockDelegate = MockGeoFenceViewModelDelegates()
         let fenceDetector = GeoFenceDetectorService()
         let viewModel = GeoFenceViewModel(datasource, fenceDetector)
+
+        let mockDetectorDelegate = MockGeoFenceDetectorDelegates()
+        viewModel.setDetectorDelegate(delegate: mockDetectorDelegate)
         viewModel.delegate = mockDelegate
 
         // Act
@@ -118,37 +108,77 @@ class GeoFenceViewModelTests: XCTestCase {
         viewModel.connectWifi(mockNetwork)
 
         // Assert
-        //XCTAssertNotNil()
+        let wifiConnected = try? XCTUnwrap(mockDetectorDelegate.isConnectedToWifi) // 3
+        let regionEntered = try? XCTUnwrap(mockDetectorDelegate.isEnteredInRegion)
+        XCTAssert(wifiConnected!)
+        XCTAssert(regionEntered!)
+    }
+
+    func testDisconnectWifi() {
+        // Setup our objects
+        let datasource = MockRegionDataSource()
+        let mockDelegate = MockGeoFenceViewModelDelegates()
+        let fenceDetector = GeoFenceDetectorService()
+        let viewModel = GeoFenceViewModel(datasource, fenceDetector)
+
+        let mockDetectorDelegate = MockGeoFenceDetectorDelegates()
+        viewModel.setDetectorDelegate(delegate: mockDetectorDelegate)
+        viewModel.delegate = mockDelegate
+
+        // Act
+        viewModel.loadRegions()
+        viewModel.connectWifi(mockNetwork)
+        viewModel.disconnectWifi()
+
+        // Assert
+        let isDisconnectedToWifi = try? XCTUnwrap(mockDetectorDelegate.isDisconnectedToWifi) // 3
+        XCTAssert(isDisconnectedToWifi!)
+    }
+
+    func testEnterAndExitIntoFence() {
+        // Setup our objects
+        let datasource = MockRegionDataSource()
+        let mockDelegate = MockGeoFenceViewModelDelegates()
+        let fenceDetector = GeoFenceDetectorService()
+        let viewModel = GeoFenceViewModel(datasource, fenceDetector)
+
+        let mockDetectorDelegate = MockGeoFenceDetectorDelegates()
+        viewModel.setDetectorDelegate(delegate: mockDetectorDelegate)
+        viewModel.delegate = mockDelegate
+
+        // Act
+        viewModel.loadRegions()
+        viewModel.didEnterRegion(mockRegion.id)
+        viewModel.didExitRegion(mockRegion.id)
+
+        // Assert
+        let isEnteredRegion = try? XCTUnwrap(mockDetectorDelegate.isEnteredInRegion)
+        let isExitedRegion = try? XCTUnwrap(mockDetectorDelegate.isExitedRegion)
+        XCTAssert(isEnteredRegion!)
+        XCTAssert(isExitedRegion!)
+    }
+
+    func testConnectWifiAndEnterExitFence() {
+        // Setup our objects
+        let datasource = MockRegionDataSource()
+        let mockDelegate = MockGeoFenceViewModelDelegates()
+        let fenceDetector = GeoFenceDetectorService()
+        let viewModel = GeoFenceViewModel(datasource, fenceDetector)
+
+        let mockDetectorDelegate = MockGeoFenceDetectorDelegates()
+        viewModel.setDetectorDelegate(delegate: mockDetectorDelegate)
+        viewModel.delegate = mockDelegate
+
+        // Act
+        viewModel.loadRegions()
+        viewModel.connectWifi(mockNetwork)
+        viewModel.didEnterRegion(mockRegion.id)
+        viewModel.didExitRegion(mockRegion.id)
+
+        // Assert
+        let isEnteredRegion = try? XCTUnwrap(mockDetectorDelegate.isEnteredInRegion)
+        let isExitedRegion = try? XCTUnwrap(mockDetectorDelegate.isExitedRegion)
+        XCTAssert(isEnteredRegion!)
+        XCTAssert(!isExitedRegion!)
     }
 }
-
-
-class MockGeoFenceViewModelDelegates: GeoFenceViewModelDelegate {
-
-    var regions: [RegionObject]? = [] // 1
-    var hotspots: [HotSpot] = []
-    var saveStatus: Bool = false
-
-    private var expectation: XCTestExpectation? // 2
-
-    func reloadData(_ regions: [RegionObject]) {
-        self.regions = regions
-    }
-
-    func networkListLoaded(_ hotspots: [HotSpot]) {
-        self.hotspots = hotspots
-    }
-
-    func stopMonitoringRegion(_ region: RegionObject) {
-
-    }
-
-    func showError(_ error: String) {
-
-    }
-
-    func savedResult(_ status: Bool) {
-        self.saveStatus = status
-    }
-}
-

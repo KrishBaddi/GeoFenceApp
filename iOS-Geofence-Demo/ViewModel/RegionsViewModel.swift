@@ -21,7 +21,7 @@ class RegionsViewModel {
         self.delegate = delegate
     }
 
-    func getNewRegion(_ regionName: String, _ radius: Float, _ coordinates: CLLocationCoordinate2D, _ network: String) {
+    func createRegion(_ regionName: String, _ radius: Float, _ coordinates: CLLocationCoordinate2D, _ network: String) {
 
         let coordinatesId = String().randomString(length: 5)
         let identifier = String().randomString(length: 5)

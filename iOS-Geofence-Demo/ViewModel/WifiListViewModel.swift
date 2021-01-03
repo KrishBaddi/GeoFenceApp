@@ -8,7 +8,7 @@
 import Foundation
 
 protocol WifiListViewModelDelegate: class {
-    func getAllHotSpots(_ hotspots: [HotSpot])
+    func networkListLoaded(_ hotspots: [HotSpot])
 }
 
 class WifiListViewModel {
@@ -20,7 +20,7 @@ class WifiListViewModel {
         self.hotspots = hotspots
     }
 
-    func getAllHotSpots() {
-        self.delegate?.getAllHotSpots(self.hotspots)
+    func getAllNetwork() {
+        self.delegate?.networkListLoaded(self.hotspots)
     }
 }

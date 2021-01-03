@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 @testable import iOS_Geofence_Demo
 
 
@@ -14,3 +15,6 @@ let mockNetwork = HotSpot(id: String().randomString(length: 3), name: "TestNetwo
 let mockRegion = RegionObject.init(id: String().randomString(length: 3), title: "Petronus TTDI", radius: 500, coordinates: mockCoordinates, network: mockNetwork)
 
 let mockRegionObjects = [mockRegion, mockRegion, mockRegion]
+
+
+

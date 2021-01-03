@@ -32,11 +32,7 @@ class GeoFenceDetectorService {
 
     private var currentRegion: RegionObject?
 
-    private var tempRegion: RegionObject? {
-        didSet {
-
-        }
-    }
+    private var tempRegion: RegionObject? 
 
 
     func setCurrentRegion(_ region: RegionObject) {
@@ -124,10 +120,7 @@ class GeoFenceDetectorService {
     // but still connected to same wifi of that old fence region
     // Then it still inside the main region
     func checkIfExitedRegionAndWifi() -> Bool {
-        guard let currentWifi = currentWifi, let tempRegion = tempRegion else {
-            return false
-        }
-        if currentWifi.id == tempRegion.network.id && currentRegion == nil {
+        if let currentWifi = currentWifi, let tempRegion = tempRegion, currentWifi.id == tempRegion.network.id && currentRegion == nil {
             return true
         } else {
             return false

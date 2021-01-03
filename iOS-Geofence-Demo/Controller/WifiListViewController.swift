@@ -91,7 +91,7 @@ class WifiListViewController: UIViewController {
     }
 
     func loadData() {
-        viewModel.getAllHotSpots()
+        viewModel.getAllNetwork()
     }
 
     @IBAction func disconnectTapped(_ sender: Any) {
@@ -143,7 +143,7 @@ extension WifiListViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension WifiListViewController: WifiListViewModelDelegate {
-    func getAllHotSpots(_ hotspots: [HotSpot]) {
+    func networkListLoaded(_ hotspots: [HotSpot]) {
         self.reloadData(hotspots)
     }
 }
