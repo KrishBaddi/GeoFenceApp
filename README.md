@@ -4,7 +4,7 @@
 
 <a href="https://www.dropbox.com/s/t7ne4fvwo8vo558/final%20record.mov?dl=0">
   <img src="https://raw.githubusercontent.com/KrishBaddi/GeoFenceApp/main/Geo%20Fence%20Images/Entered%20into%20region.png" 
-alt="IMAGE ALT TEXT HERE" width="650" height="400" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="650" height="800" border="10" /></a>
   <img src="https://github.com/JSHAMMR/Geofencing/blob/master/Docs/IMG_0809.PNG" 
 alt="IMAGE ALT TEXT HERE" width="200" height="400" border="10" />
 
