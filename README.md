@@ -1,8 +1,8 @@
 <h2> Geo fence iOS App using Swift 5 and MVVM Architecture </h2>
-<h6> This app designed to detect circle regions based on updating location. Below dropbox video shows the flow of using this app. </h6>
+<h6> This app designed to detect circle regions based on updating location. Below video and screenshots shows the flow of using this app. </h6>
 </br>
 
-<a href="https://www.dropbox.com/s/t7ne4fvwo8vo558/final%20record.mov?dl=0">
+<a href="https://github.com/KrishBaddi/GeoFenceApp/blob/main/Geo%20Fence%20Images/Entry:Exit(No%20Wifi).mov">
   <img src="https://github.com/KrishBaddi/GeoFenceApp/blob/main/Geo%20Fence%20Images/1.png" 
 alt="IMAGE ALT TEXT HERE" width="1000" height="800" border="10" /></a>
   <img src="https://github.com/KrishBaddi/GeoFenceApp/blob/main/Geo%20Fence%20Images/2.png" 
@@ -36,14 +36,10 @@ alt="IMAGE ALT TEXT HERE" width="1000" height="800" border="10" />
 
 <h2>Test Cases </h2>
 <ul>
- <li>testGesture</li>
- <li>testNotification</li>
-   <li>testWifiConnection</li>
+ <li>GeoFenceViewModelTests</li>
+ <li>WifiListViewModelTests</li>
+   <li>RegionsViewModelTests</li>
    <li>testLocationManager</li>
-
-   <li>testLocationManagerServicesEnabled</li>
- <li>testLocationManagerAuthorizationStatusAlways</li>
-
 </ul>
 
 
@@ -56,21 +52,13 @@ alt="IMAGE ALT TEXT HERE" width="1000" height="800" border="10" />
 
 <h2>Simulate routing </h2>
 <ul>
- <li>Using google map to get direction of any route then use this website https://mapstogpx.com/ to convert to GPX </li>
-</ul>
-<h2>See</h2>
-<ul>
- <li> iOS Monitoring <a href="https://developer.apple.com/documentation/corelocation/monitoring_the_user_s_proximity_to_geographic_regions">link</a></li>
-  <li> GMS Geometry <a href="https://developers.google.com/maps/documentation/ios-sdk/reference/group___geometry_utils.html#gaba958d3776d49213404af249419d0ffd">link</a></li>
+ <li>Using Location Free drive in Simulator, we can simulate entering into fence and exiting into fence region  </li>
 </ul>
 
 <h2>Future Work </h2>
 <ul>
- <li>Add new branch for VIP (Clean Swift) Architecture </li>
    <li>Allow to detect multi regions in the same time </li>
    <li>Add more test cases </li>
-
-
 </ul>
 
 
