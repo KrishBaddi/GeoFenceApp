@@ -191,8 +191,8 @@ class GeoFenceViewController: UIViewController {
 
     // Function to update title with connect wifi network
     func updateNavigationTitle(isConnected: Bool, name: String? = nil) {
-        let titleText = "Wifi: \(String(describing: name ?? ""))"
-        self.title = isConnected ? titleText : ""
+        let titleText = "Wifi connected: \(String(describing: name ?? ""))"
+        self.title = isConnected ? titleText : "Wifi Disconnected"
     }
 
     // Setup toolbar items
