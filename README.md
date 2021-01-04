@@ -58,6 +58,7 @@ alt="IMAGE ALT TEXT HERE" width="1000" height="800" border="10" />
 <h2>Future Work </h2>
 <ul>
    <li>Allow to detect multi regions in the same time </li>
+    <li>Allow to detect overlapping regions in the same time </li>
    <li>Add more test cases </li>
 </ul>
 
