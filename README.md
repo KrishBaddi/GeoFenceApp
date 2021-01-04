@@ -38,8 +38,7 @@ alt="IMAGE ALT TEXT HERE" width="1000" height="800" border="10" />
 <ul>
  <li>GeoFenceViewModelTests</li>
  <li>WifiListViewModelTests</li>
-   <li>RegionsViewModelTests</li>
-   <li>testLocationManager</li>
+ <li>RegionsViewModelTests</li>
 </ul>
 
 
